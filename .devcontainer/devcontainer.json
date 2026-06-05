@@ -1,0 +1,41 @@
+{
+  "name": "Windsurf Remote Pi - Brand",
+  "build": {
+    "dockerfile": "../../../infra/base-images/windsurf-pi/Dockerfile.base",
+    "context": "../../../"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "christian-kohler.npm-intellisense"
+      ]
+    }
+  },
+  "remoteUser": "vscode",
+"mounts": [
+  {
+    "source": "/home/sds-smith/.ssh",
+    "target": "/home/vscode/.ssh",
+    "type": "bind",
+    "consistency": "cached"
+  },
+  {
+    "source": "/home/sds-smith/.codeium",
+    "target": "/home/vscode/.codeium",
+    "type": "bind",
+    "consistency": "cached"
+  }
+],
+  "postCreateCommand": "npm install",
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/vscode/.nvm/versions/node/v20/bin"
+  }
+}
