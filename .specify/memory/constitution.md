@@ -1,9 +1,11 @@
 <!--
   SYNC IMPACT REPORT
   ==================
-  Version change: 1.0.0 → 1.0.1 (PATCH — wording clarification in Brand & Content Standards)
+  Version change: 1.0.1 → 1.0.2 (PATCH — clarify decorative imagery under Brand & Content Standards)
 
-  Modified principles: N/A
+  Modified principles:
+    - Brand & Content Standards: clarified that personal-identity restrictions apply to names,
+      biography, About Me copy, and attribution, not decorative local background imagery.
 
   Added sections: N/A
 
@@ -24,8 +26,8 @@
 
 ### I. Zero-Dependency, Build-Free
 
-The deliverable MUST consist solely of vanilla HTML, CSS, and at most ~30 lines of vanilla
-JavaScript. Build tools (webpack, Vite, Parcel, etc.), CSS preprocessors (Sass, Less, PostCSS),
+The deliverable MUST consist solely of vanilla HTML, CSS, and no more than 30 non-empty
+JavaScript source lines. Build tools (webpack, Vite, Parcel, etc.), CSS preprocessors (Sass, Less, PostCSS),
 and JavaScript frameworks or libraries (React, Vue, Alpine, etc.) are PROHIBITED. No external
 CDN resources, web fonts, or network requests of any kind are permitted. The site MUST open
 directly from the filesystem as a static file without any build step.
@@ -60,7 +62,7 @@ The authorized palette is exactly four colors:
 
 All color values used anywhere in the CSS MUST derive from these four tokens via CSS custom
 properties. No other hex, rgb, hsl, or named color values are permitted. Alpha variants
-(e.g., `rgba(var(--color-teal-rgb), 0.12)`) MUST still trace back to a palette token.
+(e.g., `rgb(var(--color-teal-rgb) / 0.12)`) MUST still trace back to a palette token.
 
 **Rationale**: Enforces strict brand identity for Metamatopoeia across all present and future
 pages or components.
@@ -95,7 +97,7 @@ dimension.
 ## Brand & Content Standards
 
 - All branding MUST use **Metamatopoeia** exclusively. Personal names (e.g., "Shawn Smith")
-  MUST NOT appear anywhere in markup, metadata, or copy.
+  MUST NOT appear anywhere in visible copy, metadata, headings, labels, or attribution.
 - The three and only authorized contact channels are:
   - **Email**: metamatopoeia@gmail.com
   - **GitHub**: https://github.com/metamatopoeia
@@ -104,7 +106,9 @@ dimension.
   and/or **Home Lab / Experimental**. These are descriptive, non-exclusive labels — a project
   may carry more than one characterization or none at all. They exist to give visitors context,
   not to enforce a rigid taxonomy.
-- No biographical, personal-identity, or "About Me" content is permitted anywhere in the site.
+- No biographical, "About Me", personal attribution, or personal-identity copy is permitted
+  anywhere in the site. Local decorative imagery MAY be retained when used as brand atmosphere
+  and not accompanied by personal-identifying copy.
 - The `<title>`, `<meta name="description">`, and Open Graph tags MUST reference Metamatopoeia
   and accurately reflect its purpose as a software project showcase brand.
 
@@ -112,7 +116,8 @@ dimension.
 
 - A single `index.css` file MUST serve as the sole stylesheet for `index.html`.
 - JavaScript MUST be vanilla, contained within a single `<script>` block at the bottom of
-  `<body>`, and MUST NOT exceed ~30 lines. No separate `.js` files.
+  `<body>`, and MUST NOT exceed 30 non-empty source lines, excluding `<script>` tags and
+  blank lines. No separate `.js` files.
 - No server-side rendering, no templating engines, no static site generators. The output is
   pure hand-authored (or AI-authored) HTML and CSS.
 - All spec, plan, and task artifacts MUST be validated against the Constitution Check gate in
@@ -146,4 +151,4 @@ document and any spec, plan, task list, or checklist, this constitution takes pr
 gate before Phase 0 research proceeds. Every `/speckit.tasks` output MUST not introduce tasks
 that violate these principles without documented justification.
 
-**Version**: 1.0.1 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-05
+**Version**: 1.0.2 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-05
