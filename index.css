@@ -1,0 +1,645 @@
+/* Metamatopoeia Website Styles */
+/* Single CSS file with Liquid Glass design system */
+/* Zero external dependencies */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES (Root)
+   ============================================ */
+
+/* Color Palette */
+:root {
+  --color-slate: #5a606a;
+  --color-teal: #79a1a2;
+  --color-mist: #bdbfc6;
+  --color-frost: #eff1f3;
+  --color-slate-rgb: 90 96 106;
+  --color-teal-rgb: 121 161 162;
+  --color-mist-rgb: 189 191 198;
+  --color-frost-rgb: 239 241 243;
+
+  --lg-color-text-primary: var(--color-slate);
+  --lg-color-text-muted: var(--color-mist);
+  --lg-color-surface-page: var(--color-frost);
+  --lg-color-accent-primary: var(--color-teal);
+  --lg-color-accent-contrast: var(--color-frost);
+}
+
+/* Liquid Glass Design Tokens */
+:root {
+  /* Glass Physics */
+  --lg-glass-blur: 20px;
+  --lg-glass-bg-opacity: 0.12;
+  --lg-glass-border-opacity: 0.2;
+  --lg-glass-surface: rgb(var(--color-frost-rgb) / var(--lg-glass-bg-opacity));
+  --lg-glass-border: rgb(
+    var(--color-frost-rgb) / var(--lg-glass-border-opacity)
+  );
+  --lg-glass-reflection: linear-gradient(
+    135deg,
+    rgb(var(--color-frost-rgb) / 0.4) 0%,
+    rgb(var(--color-frost-rgb) / 0) 50%
+  );
+  --lg-page-background-overlay: rgb(var(--color-slate-rgb) / 0.85);
+
+  /* Transitions */
+  --lg-glass-transition-duration: 300ms;
+  --lg-glass-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Shadows */
+  --lg-glass-shadow-sm: 0 2px 8px rgb(var(--color-slate-rgb) / 0.08);
+  --lg-glass-shadow-md: 0 4px 16px rgb(var(--color-slate-rgb) / 0.12);
+  --lg-glass-shadow-lg: 0 8px 32px rgb(var(--color-slate-rgb) / 0.16);
+  --lg-glass-shadow-hover: 0 12px 40px rgb(var(--color-slate-rgb) / 0.2);
+}
+
+/* Responsive Breakpoints */
+:root {
+  --lg-layout-breakpoint-mobile: 320px;
+  --lg-layout-breakpoint-tablet: 768px;
+  --lg-layout-breakpoint-desktop: 1024px;
+}
+
+/* Typography Scale */
+:root {
+  --lg-typography-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --lg-typography-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --lg-typography-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --lg-typography-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --lg-typography-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --lg-typography-size-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
+  --lg-typography-size-3xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: var(--lg-typography-size-base);
+  line-height: 1.6;
+  color: var(--lg-color-text-primary);
+  background-color: var(--lg-color-surface-page);
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    linear-gradient(
+      var(--lg-page-background-overlay),
+      var(--lg-page-background-overlay)
+    ),
+    url("./assets/background-image-profile.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--lg-color-accent-primary);
+  text-decoration: none;
+  transition: color var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+a:hover {
+  color: var(--lg-color-text-primary);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--lg-color-accent-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   LAYOUT CLASSES
+   ============================================ */
+
+.layout-fullscreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.layout-hero {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.layout-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* ============================================
+   SECTION STYLES
+   ============================================ */
+
+.section {
+  scroll-margin-top: 80px;
+}
+
+.section-title {
+  font-size: var(--lg-typography-size-3xl);
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--lg-color-text-primary);
+}
+
+.section-hero {
+  padding-top: 120px;
+}
+
+/* ============================================
+   CARD SYSTEM
+   ============================================ */
+
+.card {
+  background: var(--lg-glass-surface);
+  backdrop-filter: blur(var(--lg-glass-blur));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur));
+  border: 1px solid var(--lg-glass-border);
+  border-radius: 16px;
+  box-shadow: var(--lg-glass-shadow-md);
+  overflow: hidden;
+  transition:
+    transform var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing),
+    box-shadow var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--lg-glass-reflection);
+  opacity: 0.5;
+}
+
+.card-elevated {
+  background: var(--lg-glass-surface);
+  backdrop-filter: blur(var(--lg-glass-blur));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur));
+  border: 1px solid var(--lg-glass-border);
+  border-radius: 20px;
+  box-shadow: var(--lg-glass-shadow-lg);
+  padding: 2rem;
+  position: relative;
+  transition:
+    transform var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing),
+    box-shadow var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing);
+}
+
+.card-elevated::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--lg-glass-reflection);
+  opacity: 0.6;
+}
+
+.card-elevated:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--lg-glass-shadow-hover);
+}
+
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--lg-glass-surface);
+  backdrop-filter: blur(var(--lg-glass-blur));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur));
+  border-bottom: 1px solid var(--lg-glass-border);
+  padding: 1rem 2rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-brand {
+  font-size: var(--lg-typography-size-xl);
+  font-weight: 700;
+  color: var(--lg-color-text-primary);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--lg-color-text-primary);
+  font-weight: 500;
+  transition: color var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+.nav-link:hover {
+  color: var(--lg-color-accent-primary);
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.hero-title {
+  font-size: var(--lg-typography-size-3xl);
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: var(--lg-color-text-primary);
+}
+
+.hero-card {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-tagline {
+  font-size: var(--lg-typography-size-lg);
+  margin-bottom: 1.5rem;
+  color: var(--lg-color-text-primary);
+}
+
+/* ============================================
+   WORKSHOP SECTION
+   ============================================ */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.project-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.project-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  font-size: var(--lg-typography-size-xl);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--lg-color-text-primary);
+}
+
+.project-description {
+  font-size: var(--lg-typography-size-base);
+  color: var(--lg-color-text-primary);
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ============================================
+   CONTACT SECTION
+   ============================================ */
+
+.contact-card {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgb(var(--color-frost-rgb) / 0.05);
+  transition: background var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+.contact-link:hover {
+  background: rgb(var(--color-frost-rgb) / 0.1);
+}
+
+.contact-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--lg-color-accent-primary);
+  flex-shrink: 0;
+}
+
+.contact-label {
+  font-weight: 600;
+  color: var(--lg-color-text-primary);
+}
+
+.contact-value {
+  color: var(--lg-color-text-muted);
+  margin-left: auto;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: var(--lg-typography-size-sm);
+  cursor: pointer;
+  transition: all var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+  border: none;
+}
+
+.button-primary {
+  background: var(--lg-color-accent-primary);
+  color: var(--lg-color-accent-contrast);
+}
+
+.button-primary:hover {
+  background: var(--lg-color-text-primary);
+  color: var(--lg-color-accent-contrast);
+}
+
+.button-secondary {
+  background: rgb(var(--color-teal-rgb) / 0.1);
+  color: var(--lg-color-accent-primary);
+  border: 1px solid var(--lg-color-accent-primary);
+}
+
+.button-secondary:hover {
+  background: var(--lg-color-accent-primary);
+  color: var(--lg-color-accent-contrast);
+}
+
+/* ============================================
+   SPEEDDIAL FAB
+   ============================================ */
+
+.speed-dial-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+.speed-dial-checkbox {
+  display: none;
+}
+
+.speed-dial-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--lg-color-accent-primary);
+  color: var(--lg-color-accent-contrast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--lg-glass-shadow-lg);
+  transition: transform var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+.speed-dial-fab:hover {
+  transform: scale(1.1);
+}
+
+.speed-dial-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+.speed-dial-checkbox:checked ~ .speed-dial-fab .speed-dial-icon {
+  transform: rotate(45deg);
+}
+
+.speed-dial-actions {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+.speed-dial-checkbox:checked ~ .speed-dial-actions {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.speed-dial-action {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--lg-glass-surface);
+  backdrop-filter: blur(var(--lg-glass-blur));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur));
+  border: 1px solid var(--lg-glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lg-color-accent-primary);
+  box-shadow: var(--lg-glass-shadow-md);
+  transition: transform var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+.speed-dial-action:hover {
+  transform: scale(1.1);
+  background: var(--lg-color-accent-primary);
+  color: var(--lg-color-accent-contrast);
+}
+
+.speed-dial-action svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ============================================
+   MEDIA QUERIES
+   ============================================ */
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --lg-color-text-primary: var(--color-frost);
+    --lg-color-text-muted: var(--color-mist);
+    --lg-color-surface-page: var(--color-slate);
+    --lg-color-accent-primary: var(--color-teal);
+    --lg-color-accent-contrast: var(--color-frost);
+    --lg-page-background-overlay: rgb(var(--color-slate-rgb) / 0.9);
+    --lg-glass-bg-opacity: 0.16;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --lg-glass-transition-duration: 0ms;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .card-elevated:hover {
+    transform: none;
+  }
+
+  .speed-dial-fab:hover {
+    transform: none;
+  }
+
+  .speed-dial-action:hover {
+    transform: none;
+  }
+}
+
+/* Reduced Transparency */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --lg-glass-bg-opacity: 0.98;
+  }
+
+  .card,
+  .card-elevated,
+  .header,
+  .speed-dial-action {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .layout-fullscreen {
+    padding: 1rem;
+  }
+
+  .layout-list {
+    padding: 2rem 1rem;
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .nav-links {
+    gap: 1rem;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: var(--lg-typography-size-2xl);
+  }
+
+  .hero-title {
+    font-size: var(--lg-typography-size-2xl);
+  }
+
+  .speed-dial-container {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .contact-link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .contact-value {
+    margin-left: 0;
+  }
+}

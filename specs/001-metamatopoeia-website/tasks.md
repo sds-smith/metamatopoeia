@@ -25,7 +25,7 @@
 
 **Purpose**: Project initialization and asset preparation
 
-- [ ] T001 Create assets directory at repository root
+- [x] T001 Create assets directory at repository root
 - [ ] T002 Copy background image from reference repository to ./assets/background-image-profile.jpeg
 - [ ] T003 [P] Copy Cup project card image from reference repository to ./assets/card-media-cup.png
 - [ ] T004 [P] Copy Liquid Glass UI project card image from reference repository to ./assets/card-media-liquid-glass-ui.png
@@ -42,21 +42,21 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Create index.css at repository root with an initial :root scaffold for palette, semantic color aliases, Liquid Glass tokens, typography tokens, and layout tokens
-- [ ] T008 Add Metamatopoeia color palette CSS custom properties to index.css (--color-slate, --color-teal, --color-mist, --color-frost)
-- [ ] T009 Add Liquid Glass design tokens to index.css following --lg-{group}-{subgroup}-{token} naming convention
-- [ ] T010 Add responsive breakpoint and typography scale CSS custom properties to index.css using --lg-layout-_ and --lg-typography-_ token names
-- [ ] T011 Add base styles and reset to index.css (box-sizing, margins, html, body, img, a)
-- [ ] T012 Add layout classes to index.css (.layout-fullscreen, .layout-hero, .layout-list)
-- [ ] T013 Add card system styles to index.css (.card, .card-elevated)
-- [ ] T014 Add header and navigation styles to index.css (.header, .nav, .nav-brand, .nav-links, .nav-link)
-- [ ] T015 Add section styles to index.css (.section, .section-title, .section-hero)
-- [ ] T016 Add hero section styles to index.css (.hero-title, .hero-card, .hero-tagline)
-- [ ] T017 Add button styles to index.css (.button, .button-primary, .button-secondary)
-- [ ] T018 Add dark mode media query to index.css (@media prefers-color-scheme: dark)
-- [ ] T019 Add reduced motion media query to index.css (@media prefers-reduced-motion: reduce)
-- [ ] T020 Add reduced transparency media query to index.css (@media prefers-reduced-transparency: reduce)
-- [ ] T021 Add mobile responsive media query to index.css (@media max-width: 768px)
+- [x] T007 Create index.css at repository root with an initial :root scaffold for palette, semantic color aliases, Liquid Glass tokens, typography tokens, and layout tokens
+- [x] T008 Add Metamatopoeia color palette CSS custom properties to index.css (--color-slate, --color-teal, --color-mist, --color-frost)
+- [x] T009 Add Liquid Glass design tokens to index.css following --lg-{group}-{subgroup}-{token} naming convention
+- [x] T010 Add responsive breakpoint and typography scale CSS custom properties to index.css using --lg-layout-_ and --lg-typography-_ token names
+- [x] T011 Add base styles and reset to index.css (box-sizing, margins, html, body, img, a)
+- [x] T012 Add layout classes to index.css (.layout-fullscreen, .layout-hero, .layout-list)
+- [x] T013 Add card system styles to index.css (.card, .card-elevated)
+- [x] T014 Add header and navigation styles to index.css (.header, .nav, .nav-brand, .nav-links, .nav-link)
+- [x] T015 Add section styles to index.css (.section, .section-title, .section-hero)
+- [x] T016 Add hero section styles to index.css (.hero-title, .hero-card, .hero-tagline)
+- [x] T017 Add button styles to index.css (.button, .button-primary, .button-secondary)
+- [x] T018 Add dark mode media query to index.css (@media prefers-color-scheme: dark)
+- [x] T019 Add reduced motion media query to index.css (@media prefers-reduced-motion: reduce)
+- [x] T020 Add reduced transparency media query to index.css (@media prefers-reduced-transparency: reduce)
+- [x] T021 Add mobile responsive media query to index.css (@media max-width: 768px)
 
 **Checkpoint**: CSS foundation ready - user story implementation can now begin in parallel
 
@@ -70,15 +70,15 @@
 
 ### Implementation for User Story 1
 
-- [ ] T022 Create index.html with HTML5 doctype, language attribute, and head section
-- [ ] T023 Add viewport meta tag and Metamatopoeia metadata (title, description, Open Graph) to index.html
-- [ ] T024 Link index.css stylesheet in index.html head section
-- [ ] T025 Add header navigation structure to index.html with brand name "Metamatopoeia" and three nav links (home, workshop, contact)
-- [ ] T026 Add main wrapper and Hero section (id="hero") to index.html with layout-fullscreen and layout-hero classes
-- [ ] T027 Add Hero content to index.html: brand name heading, .card-elevated with tagline "Elegant Software Intentionally Designed", CTA button linking to #workshop
-- [ ] T028 Add Workshop section (id="workshop") placeholder to index.html with layout-list class
-- [ ] T029 Add Contact section (id="contact") placeholder to index.html with layout-list class
-- [ ] T030 Add SpeedDial FAB placeholder structure to index.html (checkbox, label, actions container)
+- [x] T022 Create index.html with HTML5 doctype, language attribute, and head section
+- [x] T023 Add viewport meta tag and Metamatopoeia metadata (title, description, Open Graph) to index.html
+- [x] T024 Link index.css stylesheet in index.html head section
+- [x] T025 Add header navigation structure to index.html with brand name "Metamatopoeia" and three nav links (home, workshop, contact)
+- [x] T026 Add main wrapper and Hero section (id="hero") to index.html with layout-fullscreen and layout-hero classes
+- [x] T027 Add Hero content to index.html: brand name heading, .card-elevated with tagline "Elegant Software Intentionally Designed", CTA button linking to #workshop
+- [x] T028 Add Workshop section (id="workshop") placeholder to index.html with layout-list class
+- [x] T029 Add Contact section (id="contact") placeholder to index.html with layout-list class
+- [x] T030 Add SpeedDial FAB placeholder structure to index.html (checkbox, label, actions container)
 - [ ] T031 Test navigation scrolling: click nav links and verify smooth scroll to correct sections
 - [ ] T032 Test zero network requests: open DevTools Network tab and verify zero external requests on page load
 
@@ -94,11 +94,11 @@
 
 ### Implementation for User Story 2
 
-- [ ] T033 Add workshop CSS styles to index.css (.project-grid, .project-card, .project-image, .project-content, .project-title, .project-description, .project-actions)
-- [ ] T034 [P] Add Cup project card to index.html Workshop section with title, description, image, and three action buttons (Gist, Preview, Beta)
-- [ ] T035 [P] Add Liquid Glass UI project card to index.html Workshop section with title, description, image, and View Source Code button
-- [ ] T036 [P] Add Discover Breweries project card to index.html Workshop section with title, description, image, and View Source Code button
-- [ ] T037 [P] Add Assemble the Jams project card to index.html Workshop section with title, description, image, and View Source Code button
+- [x] T033 Add workshop CSS styles to index.css (.project-grid, .project-card, .project-image, .project-content, .project-title, .project-description, .project-actions)
+- [x] T034 [P] Add Cup project card to index.html Workshop section with title, description, image, and three action buttons (Gist, Preview, Beta)
+- [x] T035 [P] Add Liquid Glass UI project card to index.html Workshop section with title, description, image, and View Source Code button
+- [x] T036 [P] Add Discover Breweries project card to index.html Workshop section with title, description, image, and View Source Code button
+- [x] T037 [P] Add Assemble the Jams project card to index.html Workshop section with title, description, image, and View Source Code button
 - [ ] T038 Test project cards render: verify all four cards display with images, titles, descriptions, and action buttons
 - [ ] T039 Test project card links: click each action button and verify correct external destinations
 - [ ] T040 Test mobile responsiveness: resize to <768px and verify cards stack vertically with legible text and tappable buttons
@@ -115,9 +115,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T041 Add SpeedDial FAB CSS styles to index.css (.speed-dial-container, .speed-dial-checkbox, .speed-dial-fab, .speed-dial-icon, .speed-dial-actions, .speed-dial-action)
-- [ ] T042 Update SpeedDial FAB HTML in index.html with Email, GitHub, and LinkedIn action buttons with SVG icons and ARIA labels
-- [ ] T043 Add SpeedDial FAB JavaScript (no more than 30 non-empty source lines) to index.html: FAB toggle on click, close on action click, close on outside click, close on Escape key, keyboard navigation
+- [x] T041 Add SpeedDial FAB CSS styles to index.css (.speed-dial-container, .speed-dial-checkbox, .speed-dial-fab, .speed-dial-icon, .speed-dial-actions, .speed-dial-action)
+- [x] T042 Update SpeedDial FAB HTML in index.html with Email, GitHub, and LinkedIn action buttons with SVG icons and ARIA labels
+- [x] T043 Add SpeedDial FAB JavaScript (no more than 30 non-empty source lines) to index.html: FAB toggle on click, close on action click, close on outside click, close on Escape key, keyboard navigation
 - [ ] T044 Test FAB toggle: click FAB and verify three action buttons expand with correct icons
 - [ ] T045 Test FAB close on action: click Email action and verify FAB closes and mailto: opens
 - [ ] T046 Test FAB close on outside click: click outside FAB container and verify FAB closes
@@ -136,11 +136,11 @@
 
 ### Implementation for User Story 4
 
-- [ ] T049 Add contact section CSS styles to index.css (.contact-card, .contact-list, .contact-item, .contact-link, .contact-icon, .contact-label, .contact-value)
-- [ ] T050 Update Contact section in index.html with .card-elevated glass card layout
-- [ ] T051 Add Email contact channel to index.html Contact section with SVG icon, label, and mailto: link
-- [ ] T052 Add GitHub contact channel to index.html Contact section with SVG icon, label, and external link with rel="noopener noreferrer"
-- [ ] T053 Add LinkedIn contact channel to index.html Contact section with SVG icon, label, and external link with rel="noopener noreferrer"
+- [x] T049 Add contact section CSS styles to index.css (.contact-card, .contact-list, .contact-item, .contact-link, .contact-icon, .contact-label, .contact-value)
+- [x] T050 Update Contact section in index.html with .card-elevated glass card layout
+- [x] T051 Add Email contact channel to index.html Contact section with SVG icon, label, and mailto: link
+- [x] T052 Add GitHub contact channel to index.html Contact section with SVG icon, label, and external link with rel="noopener noreferrer"
+- [x] T053 Add LinkedIn contact channel to index.html Contact section with SVG icon, label, and external link with rel="noopener noreferrer"
 - [ ] T054 Test contact section render: navigate to #contact and verify all three channels are visible with labels
 - [ ] T055 Test contact links: click each channel and verify correct destinations (mailto: for email, new tab for GitHub/LinkedIn)
 
@@ -156,9 +156,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T056 Add ARIA labels to all interactive elements in index.html (nav links, buttons, contact links, FAB)
-- [ ] T057 Add aria-hidden="true" to all decorative SVG icons in index.html
-- [ ] T058 Add :focus-visible styles to index.css for keyboard navigation focus indicators
+- [x] T056 Add ARIA labels to all interactive elements in index.html (nav links, buttons, contact links, FAB)
+- [x] T057 Add aria-hidden="true" to all decorative SVG icons in index.html
+- [x] T058 Add :focus-visible styles to index.css for keyboard navigation focus indicators
 - [ ] T059 Verify reduced motion works: enable OS reduced motion, reload page, verify --lg-glass-transition-duration is 0ms and scroll-behavior is auto
 - [ ] T060 Verify reduced transparency works: enable OS reduced transparency, reload page, verify --lg-glass-bg-opacity is 0.98 and backdrop-filter is none
 - [ ] T061 Test keyboard navigation: Tab through entire page without mouse, verify all interactive elements are reachable and focus indicators are visible
