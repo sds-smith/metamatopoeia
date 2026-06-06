@@ -16,9 +16,9 @@
 
 ## Phase 2: Foundational — Visual Token Foundation (US4, P2 implemented first)
 
-**Note**: US4 token changes are done here, before US1–US3, so visual output is correct during verification of subsequent phases.
+**⚠️ IMPLEMENTATION ORDER**: Execute these token tasks BEFORE Phase 3 (US1). Despite US4 being P2 in `spec.md`, updating tokens first ensures correct light-on-dark visual output during verification of US1–US3 checkpoints. An implementor following spec priority order (P1 first) would see dark-on-dark text until Phase 6 — acceptable but makes visual debugging harder.
 
-- [ ] T002 [US4] `index.css` line 20 — change `--lg-color-text-primary: var(--color-slate)` to `--lg-color-text-primary: var(--color-frost)`
+- [ ] T002 [US4] `index.css` — **(a)** line 20: change `--lg-color-text-primary: var(--color-slate)` to `--lg-color-text-primary: var(--color-frost)`; **(b)** `.button-primary:hover` rule (approx. line 437): change `background: var(--lg-color-text-primary)` to `background: var(--color-slate)` — **required** to prevent frost-on-frost invisible text in the Hero CTA hover state caused by this token reassignment
 - [ ] T003 [US4] `index.css` lines 37–41 — replace 2-stop frost-rgb `--lg-glass-reflection` with 4-stop slate-rgb: `linear-gradient(135deg, rgb(var(--color-slate-rgb) / 0.4) 0%, rgb(var(--color-slate-rgb) / 0) 40%, rgb(var(--color-slate-rgb) / 0) 60%, rgb(var(--color-slate-rgb) / 0.15) 100%)`
 
 **Checkpoint (US4)**: Confirm `index.css` line 552 dark-mode block still reads `--lg-color-text-primary: var(--color-frost)` — no edit needed, verify unchanged.
@@ -57,12 +57,12 @@
 
 ### CSS Tasks (`index.css`)
 
-- [ ] T009 [US3] `index.css` `.card` rule (lines 183–196) — add `position: relative`; rename `.card::before` to `.card::after` and replace `height: 1px; top: 0; left: 0; right: 0; opacity: 0.5` with `inset: 0; border-radius: inherit; pointer-events: none`
-- [ ] T010 [US3] `index.css` `.card-elevated` rule (lines 209–223) — change `border-radius: 20px` to `24px`; remove `padding: 2rem`; add `overflow: hidden` (already present on `.card` but needed standalone on `.card-elevated`)
-- [ ] T011 [US3] `index.css` `.card-elevated::before` (lines 225–234) — rename to `.card-elevated::after`; replace `height: 2px; top: 0; left: 0; right: 0; opacity: 0.6` with `inset: 0; border-radius: inherit; pointer-events: none`
+- [ ] T009 [US3] `index.css` `.card` rule (lines 183–196) — **(a)** add `position: relative` to the `.card` rule; **(b)** delete the entire `.card::before` rule block (lines 198–207); **(c)** add a new `.card::after` rule: `content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--lg-glass-reflection); pointer-events: none;`
+- [ ] T010 [US3] `index.css` `.card-elevated` rule (lines 209–223) — change `border-radius: 20px` to `24px`; remove `padding: 2rem`; add `overflow: hidden` — ensures image-bleed behavior regardless of whether `.card` is also applied to the element
+- [ ] T011 [US3] `index.css` — delete the entire `.card-elevated::before` rule block (lines 225–234); add a new `.card-elevated::after` rule: `content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--lg-glass-reflection); pointer-events: none;`
 - [ ] T012 [US3] `index.css` `.hero-card` rule (lines 298–301) — add `padding: 2rem`
 - [ ] T013 [US3] `index.css` `.contact-card` rule (lines 363–366) — add `padding: 2rem`
-- [ ] T014 [US3] `index.css` after `.card-elevated:hover` rule — add three new rules: `.media { position: relative; z-index: 1; display: block; width: 100%; object-fit: cover; }` and `.content { position: relative; z-index: 1; padding: 16px; }` and `.card-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }`
+- [ ] T014 [US3] `index.css` after `.card-elevated:hover` rule — add three new rules: `.media { position: relative; z-index: 1; display: block; width: 100%; object-fit: cover; background-size: cover; background-repeat: no-repeat; background-position: center; }` and `.content { position: relative; z-index: 1; padding: 16px; }` and `.card-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }`
 - [ ] T015 [US3] `index.css` after `.project-grid` section — add two new rules: `.portfolio-links { display: flex; flex-direction: column; gap: 24px; }` and `.layout-list .card { width: 100%; }`
 - [ ] T016 [US3] `index.css` `.button` rule (lines 417–429) — replace `padding: 0.75rem 1.5rem; border: none; font-weight: 600; font-size: var(--lg-typography-size-sm)` with `padding: 8px 16px; border: 1px solid var(--lg-glass-border); background: var(--lg-glass-surface); color: var(--lg-color-text-muted); font-size: var(--lg-typography-size-xs); text-decoration: none;`
 - [ ] T017 [US3] `index.css` — delete rules for `.project-grid` (lines 313–317), `.project-card` (319–323), `.project-image` (325–331), `.project-content` (333–337), `.project-description` (346–351), `.project-actions` (353–357); also delete `.project-grid` override inside `@media (max-width: 768px)` (lines 619–621)
