@@ -1,11 +1,16 @@
 <!--
   SYNC IMPACT REPORT
   ==================
-  Version change: 1.0.1 → 1.0.2 (PATCH — clarify decorative imagery under Brand & Content Standards)
+  Version change: 1.0.2 → 2.0.0 (MAJOR — remove external model-site reference and personal-identity
+  prohibition from Brand & Content Standards)
 
   Modified principles:
-    - Brand & Content Standards: clarified that personal-identity restrictions apply to names,
-      biography, About Me copy, and attribution, not decorative local background imagery.
+    - Principle I (Zero-Dependency, Build-Free): rationale rewritten as a self-contained
+      statement; removed reference to `html_portfolio` as an external model.
+    - Brand & Content Standards: removed the exclusive-Metamatopoeia-only branding rule and
+      the MUST NOT prohibition on personal names, biographical content, and personal
+      attribution. Personal identifiers MAY now appear alongside Metamatopoeia branding.
+      Removed the clause tying decorative imagery to the absence of personal-identifying copy.
 
   Added sections: N/A
 
@@ -17,7 +22,11 @@
     ✅ .specify/templates/tasks-template.md      — no changes required
     ✅ .specify/templates/checklist-template.md  — no changes required
 
-  Follow-up TODOs: none
+  Follow-up TODOs:
+    - Existing spec artifacts under specs/ (spec.md, research.md, tasks.md, contracts/)
+      contain references to the old personal-name prohibition and to `sds-smith/html_portfolio`
+      as a reference repository. These are historical artifacts; update as each spec is next
+      revised or if a full audit is desired.
 -->
 
 # Metamatopoeia Constitution
@@ -32,9 +41,9 @@ and JavaScript frameworks or libraries (React, Vue, Alpine, etc.) are PROHIBITED
 CDN resources, web fonts, or network requests of any kind are permitted. The site MUST open
 directly from the filesystem as a static file without any build step.
 
-**Rationale**: Mirrors the zero-dependency philosophy of the reference `html_portfolio`;
-ensures maximum longevity, portability, and instant load performance with zero infrastructure
-overhead.
+**Rationale**: Ensures maximum longevity, portability, and instant load performance with zero
+infrastructure overhead. A filesystem-openable, build-free deliverable remains operable
+indefinitely without toolchain maintenance.
 
 ### II. Liquid Glass Design System
 
@@ -96,8 +105,8 @@ dimension.
 
 ## Brand & Content Standards
 
-- All branding MUST use **Metamatopoeia** exclusively. Personal names (e.g., "Shawn Smith")
-  MUST NOT appear anywhere in visible copy, metadata, headings, labels, or attribution.
+- The project brand is **Metamatopoeia**. Personal names, biographical content, and personal
+  attribution MAY appear alongside Metamatopoeia branding at the author's discretion.
 - The three and only authorized contact channels are:
   - **Email**: metamatopoeia@gmail.com
   - **GitHub**: https://github.com/metamatopoeia
@@ -106,9 +115,7 @@ dimension.
   and/or **Home Lab / Experimental**. These are descriptive, non-exclusive labels — a project
   may carry more than one characterization or none at all. They exist to give visitors context,
   not to enforce a rigid taxonomy.
-- No biographical, "About Me", personal attribution, or personal-identity copy is permitted
-  anywhere in the site. Local decorative imagery MAY be retained when used as brand atmosphere
-  and not accompanied by personal-identifying copy.
+- Local decorative imagery MAY be retained when used as brand atmosphere.
 - The `<title>`, `<meta name="description">`, and Open Graph tags MUST reference Metamatopoeia
   and accurately reflect its purpose as a software project showcase brand.
 
@@ -151,4 +158,4 @@ document and any spec, plan, task list, or checklist, this constitution takes pr
 gate before Phase 0 research proceeds. Every `/speckit.tasks` output MUST not introduce tasks
 that violate these principles without documented justification.
 
-**Version**: 1.0.2 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-05
+**Version**: 2.0.0 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-06
