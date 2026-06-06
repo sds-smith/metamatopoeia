@@ -1,0 +1,12 @@
+# OS artifacts
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+
+# Editor artifacts
+.vscode/
+.idea/
+
+# Spec-kit working files
+.specify/memory/context_snapshot.md
