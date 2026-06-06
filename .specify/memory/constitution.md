@@ -1,6 +1,31 @@
 <!--
   SYNC IMPACT REPORT
   ==================
+  Version change: 2.0.0 → 2.1.0 (MINOR — permit external attribution links in navigation)
+
+  Modified principles:
+    - Principle IV (Single-Page, Three-Section Architecture): navigation clause updated to
+      allow external attribution links alongside the three required in-page anchors.
+      Previously prohibited any nav item not referencing an in-page anchor; now permits
+      additional external attribution links at the author's discretion.
+
+  Added sections: N/A
+
+  Removed sections: N/A
+
+  Templates reviewed:
+    ✅ .specify/templates/plan-template.md       — no changes required
+    ✅ .specify/templates/spec-template.md       — no changes required
+    ✅ .specify/templates/tasks-template.md      — no changes required
+    ✅ .specify/templates/checklist-template.md  — no changes required
+
+  Follow-up TODOs:
+    - None. This amendment is fully self-contained.
+-->
+
+<!--
+  SYNC IMPACT REPORT (previous)
+  ==================
   Version change: 1.0.2 → 2.0.0 (MAJOR — remove external model-site reference and personal-identity
   prohibition from Brand & Content Standards)
 
@@ -80,8 +105,10 @@ pages or components.
 
 The deliverable MUST be a single `index.html` file. The page MUST contain exactly three
 top-level content sections in this order: **Hero**, **Workshop**, **Contact**. No About
-section exists. Navigation MUST reference only these three in-page anchors. No multi-page
-routing, `<iframe>` embeds, or JavaScript-driven page transitions are permitted.
+section exists. Navigation MUST reference the three required in-page anchors (Hero, Workshop, Contact).
+Additional external attribution links MAY appear in the navigation at the author's
+discretion. No multi-page routing, `<iframe>` embeds, or JavaScript-driven page
+transitions are permitted.
 
 **Rationale**: Reduces cognitive overhead for visitors; keeps the site focused on showcasing
 projects rather than personal biography. Single-file delivery aligns with the zero-dependency
@@ -158,4 +185,4 @@ document and any spec, plan, task list, or checklist, this constitution takes pr
 gate before Phase 0 research proceeds. Every `/speckit.tasks` output MUST not introduce tasks
 that violate these principles without documented justification.
 
-**Version**: 2.0.0 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-06
+**Version**: 2.1.0 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-06
