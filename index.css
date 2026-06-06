@@ -124,6 +124,21 @@ body::before {
   background-repeat: no-repeat;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("./assets/Metamatopoeia_simple_transparent.png") left center
+    no-repeat;
+  background-size: auto 55vh;
+  opacity: 0.45;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -303,6 +318,12 @@ a:focus-visible {
   color: var(--lg-color-text-primary);
 }
 
+.nav-logo {
+  display: block;
+  height: 36px;
+  width: auto;
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -341,6 +362,34 @@ a:focus-visible {
   font-size: var(--lg-typography-size-lg);
   margin-bottom: 1.5rem;
   color: var(--lg-color-text-primary);
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-cta-link {
+  color: var(--lg-color-text-muted);
+  font-size: var(--lg-typography-size-sm);
+  text-decoration: none;
+  transition: color var(--lg-glass-transition-duration)
+    var(--lg-glass-transition-easing);
+}
+
+.hero-cta-link:hover,
+.hero-cta-link:focus-visible {
+  color: var(--lg-color-text-primary);
+}
+
+.hero-cta-divider {
+  color: var(--lg-color-text-muted);
+  opacity: 0.4;
+  user-select: none;
 }
 
 /* ============================================
@@ -610,6 +659,10 @@ a:focus-visible {
     background-size: cover;
   }
 
+  body::after {
+    display: none;
+  }
+
   .layout-fullscreen {
     padding: 1rem;
   }
@@ -624,6 +677,8 @@ a:focus-visible {
   }
 
   .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1rem;
   }
 

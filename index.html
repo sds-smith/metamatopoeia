@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Metamatopoeia - Elegant Software Intentionally Designed</title>
+    <link rel="icon" type="image/jpeg" href="./assets/Metamatopoeia_simple_small.png">
     <meta
       name="description"
       content="Metamatopoeia: A software project showcase featuring elegant, intentionally designed applications."
@@ -22,7 +23,14 @@
   <body>
     <header class="header">
       <nav class="nav">
-        <div class="nav-brand">Metamatopoeia</div>
+        <div class="nav-brand">
+          <!-- <img
+            src="./assets/Metamatopoeia_simple_small.png"
+            alt="Metamatopoeia"
+            class="nav-logo"
+          /> -->
+          Metamatopoeia
+        </div>
         <ul class="nav-links">
           <li>
             <a
@@ -42,6 +50,16 @@
           </li>
           <li>
             <a
+              href="https://sds-smith.io"
+              class="nav-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Meet the Founder, visit personal website"
+              >meet the founder</a
+            >
+          </li>
+          <li>
+            <a
               href="#contact"
               class="nav-link"
               aria-label="Navigate to Contact section"
@@ -57,15 +75,26 @@
         class="section section-hero layout-fullscreen layout-hero"
       >
         <div class="hero-content">
-          <h1 class="hero-title">Metamatopoeia</h1>
+          <!-- <h1 class="hero-title">Metamatopoeia</h1> -->
           <div class="card card-elevated hero-card">
             <p class="hero-tagline">Elegant Software Intentionally Designed</p>
-            <a
-              href="#workshop"
-              class="button button-primary"
-              aria-label="View our workshop projects"
-              >Explore Workshop</a
-            >
+            <div class="hero-cta">
+              <a
+                href="#workshop"
+                class="hero-cta-link"
+                aria-label="Scroll to Workshop section"
+                >Scroll to Workshop</a
+              >
+              <span class="hero-cta-divider" aria-hidden="true">|</span>
+              <a
+                href="https://sds-smith.io"
+                class="hero-cta-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Meet the Founder, visit personal website"
+                >Meet the Founder</a
+              >
+            </div>
           </div>
         </div>
       </section>
