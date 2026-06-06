@@ -145,7 +145,7 @@ Represents a top-level content section on the page.
 
 1. **Hero**
    - ID: `hero`
-   - Content: Brand name "Metamatopoeia", tagline card with "Elegant Software Intentionally Designed", CTA button linking to `#workshop`
+   - Content: Brand name "Metamatopoeia", tagline card with "Human-Centered Software Intentionally Designed", CTA button linking to `#workshop`
 
 2. **Workshop**
    - ID: `workshop`
@@ -317,14 +317,14 @@ Represents a top-level content section on the page.
 ### HTML Document Metadata
 
 ```html
-<title>Metamatopoeia - Elegant Software Intentionally Designed</title>
+<title>Metamatopoeia - Human-Centered Software Intentionally Designed</title>
 <meta
   name="description"
   content="Metamatopoeia: A software project showcase featuring elegant, intentionally designed applications."
 />
 <meta
   property="og:title"
-  content="Metamatopoeia - Elegant Software Intentionally Designed"
+  content="Metamatopoeia - Human-Centered Software Intentionally Designed"
 />
 <meta
   property="og:description"

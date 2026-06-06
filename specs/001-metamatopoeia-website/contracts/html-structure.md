@@ -14,14 +14,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Metamatopoeia - Elegant Software Intentionally Designed</title>
+    <title>
+      Metamatopoeia - Human-Centered Software Intentionally Designed
+    </title>
     <meta
       name="description"
       content="Metamatopoeia: A software project showcase featuring elegant, intentionally designed applications."
     />
     <meta
       property="og:title"
-      content="Metamatopoeia - Elegant Software Intentionally Designed"
+      content="Metamatopoeia - Human-Centered Software Intentionally Designed"
     />
     <meta
       property="og:description"
@@ -74,7 +76,9 @@
         <div class="hero-content">
           <h1 class="hero-title">Metamatopoeia</h1>
           <div class="card card-elevated hero-card">
-            <p class="hero-tagline">Elegant Software Intentionally Designed</p>
+            <p class="hero-tagline">
+              Human-Centered Software Intentionally Designed
+            </p>
             <a
               href="#workshop"
               class="button button-primary"

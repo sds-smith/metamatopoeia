@@ -75,7 +75,7 @@
 - [x] T024 Link index.css stylesheet in index.html head section
 - [x] T025 Add header navigation structure to index.html with brand name "Metamatopoeia" and three nav links (home, workshop, contact)
 - [x] T026 Add main wrapper and Hero section (id="hero") to index.html with layout-fullscreen and layout-hero classes
-- [x] T027 Add Hero content to index.html: brand name heading, .card-elevated with tagline "Elegant Software Intentionally Designed", CTA button linking to #workshop
+- [x] T027 Add Hero content to index.html: brand name heading, .card-elevated with tagline "Human-Centered Software Intentionally Designed", CTA button linking to #workshop
 - [x] T028 Add Workshop section (id="workshop") placeholder to index.html with layout-list class
 - [x] T029 Add Contact section (id="contact") placeholder to index.html with layout-list class
 - [x] T030 Add SpeedDial FAB placeholder structure to index.html (checkbox, label, actions container)

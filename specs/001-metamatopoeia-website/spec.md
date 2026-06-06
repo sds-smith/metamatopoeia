@@ -110,7 +110,7 @@ A visitor using assistive technology or a device with `prefers-reduced-motion` o
 - **FR-002**: The page MUST contain exactly three top-level content sections in order: Hero (`id="hero"`), Workshop (`id="workshop"`), Contact (`id="contact"`).
 - **FR-003**: The sticky header navigation MUST contain three links anchoring to `#hero`, `#workshop`, and `#contact`, labeled "home", "workshop", and "contact" respectively.
 - **FR-004**: The header MUST display the brand name "Metamatopoeia" — no personal names anywhere in markup or content.
-- **FR-005**: The Hero section MUST contain a `.card-elevated` glass card with the tagline **"Elegant Software Intentionally Designed"** and a CTA button linking to `#workshop`.
+- **FR-005**: The Hero section MUST contain a `.card-elevated` glass card with the tagline **"Human-Centered Software Intentionally Designed"** and a CTA button linking to `#workshop`.
 - **FR-006**: The Workshop section MUST contain exactly four `.card-elevated` project cards: Cup, Liquid Glass UI, Discover Breweries, and Assemble the Jams.
 - **FR-007**: Each project card MUST display: project title, description, and action button(s) linking to the project's GitHub repository. Characterization labels (Open-Source / Home Lab / Experimental) are deferred to a future iteration.
 - **FR-008**: The Contact section MUST use a `.card-elevated` glass card layout to explicitly display all three authorized contact channels: `metamatopoeia@gmail.com`, `https://github.com/metamatopoeia`, `https://www.linkedin.com/company/metamatopoeia`.
