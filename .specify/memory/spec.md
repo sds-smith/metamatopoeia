@@ -1,104 +1,100 @@
-# Feature Specification: Metamatopoeia Website
+# Feature Specification: Metamatopoeia Layout Refinement
 
-**Feature Branch**: `001-metamatopoeia-website`  
-**Created**: 2026-06-05  
+**Feature Branch**: `002-layout-refinement`  
+**Created**: 2026-06-06  
 **Status**: Clarified  
-**Input**: Build the Metamatopoeia brand website — a single-page software project showcase mirroring the structure, CSS architecture, and liquid glass design system of `sds-smith/html_portfolio`, remapped to the Metamatopoeia brand, palette, and constitution constraints.
+**Input**: Refine page layout, components, and color palette to more precisely mirror the model site `sds-smith/html_portfolio`. Five targeted changes: (1) right-justified background image treatment, (2) header surface unification with page content, (3) workshop card exact design match to portfolio cards, (4) color palette token reassignment (`color-frost` → `text-primary`, `color-slate` → `lg-glass-reflection`), (5) speed dial FAB paper plane icon, static across open/closed states.
 
 ---
 
 ## User Scenarios & Testing _(mandatory)_
 
-### User Story 1 — First-Time Visitor Orientation (Priority: P1)
+### User Story 1 — Background Image Renders Right-Justified (Priority: P1)
 
-A visitor lands on the site for the first time and immediately understands what Metamatopoeia is, can navigate to see projects, and can reach out via a contact channel — all without leaving the page or triggering a network request.
+A visitor loads the page and sees the background image displayed in the right portion of the viewport, with the left side showing only the gradient overlay — exactly matching the model site's composition.
 
-**Why this priority**: Core brand entry point. Every other story depends on this working correctly.
+**Why this priority**: The background treatment is the dominant visual impression of the page. It establishes the depth and atmosphere for all glass cards layered on top.
 
-**Independent Test**: Open `index.html` directly from the filesystem (no server). The page loads completely, all three sections are visible, navigation links scroll to the correct anchors, and all contact links resolve to valid `mailto:` or external URLs.
+**Independent Test**: Open `index.html` from the filesystem in a wide viewport (≥1024px). The background image appears on the right side; the left side fades into the gradient overlay. On mobile, the background falls back to `cover` per the model's `@media (max-width: 768px)` override.
 
 **Acceptance Scenarios**:
 
-1. **Given** a visitor opens `index.html` from the filesystem, **When** the page loads, **Then** the Hero section is visible first with the Metamatopoeia brand name prominent in the header, a headline/tagline card, and a CTA linking to `#workshop`.
-2. **Given** the visitor clicks the "workshop" nav link, **When** the scroll completes, **Then** the Workshop section is fully in view showing project cards.
-3. **Given** the visitor clicks the "contact" nav link, **When** the scroll completes, **Then** the Contact section is in view showing all three contact channels.
-4. **Given** the page is loaded, **When** the visitor inspects the network tab, **Then** zero external network requests are made (no fonts, no CDN, no analytics, no remote images).
+1. **Given** a visitor opens `index.html` at a desktop viewport, **When** the page loads, **Then** the background image is positioned to the right and does not fill the full viewport width.
+2. **Given** the page is loaded, **When** the visitor resizes to ≤768px, **Then** the background image switches to `cover` mode filling the full viewport.
+3. **Given** the page is loaded, **When** the visitor inspects the network tab, **Then** zero external network requests are made (local asset only).
 
 ---
 
-### User Story 2 — Project Discovery in Workshop (Priority: P2)
+### User Story 2 — Header Appears as Unified Page Surface (Priority: P1)
 
-A visitor browses the Workshop section to evaluate Metamatopoeia's project portfolio, reading project descriptions and following links to source code or live demos.
+A visitor scrolls through the page and perceives the sticky header as part of the same transparent backdrop as the rest of the content — not as a distinct frosted panel floating above it.
 
-**Why this priority**: Primary purpose of the site — showcasing projects. Directly communicates the brand's technical depth.
+**Why this priority**: The glass panel separation between header and content creates a layering artifact inconsistent with the model's aesthetic. Removing it produces the intended unified composition.
 
-**Independent Test**: Navigate directly to `index.html#workshop`. All four project cards render with title, description, and at least one action button with a valid `href`.
+**Independent Test**: Open `index.html`. Scroll down past the Hero section. The header text and nav links remain readable but the header has no visible background fill, blur effect, or bottom border separating it from the content below.
 
 **Acceptance Scenarios**:
 
-1. **Given** the visitor views the Workshop section, **When** the section renders, **Then** exactly four project cards are displayed: Cup, Liquid Glass UI, Discover Breweries, and Assemble the Jams.
-2. **Given** a project card is rendered, **When** the visitor reads it, **Then** each card shows: project title, short description, and one or more action buttons.
-3. **Given** the visitor clicks a "View Source Code" button, **When** the link resolves, **Then** it opens the correct GitHub repository in a new tab.
-4. **Given** the visitor is on mobile (<768px), **When** the Workshop section renders, **Then** cards stack vertically at full width with legible text and tappable buttons (min 44px tap targets).
+1. **Given** the visitor views the page at any scroll position, **When** they look at the header, **Then** no glass surface, blur, or bottom border is visible in the header area.
+2. **Given** a keyboard user tabs to a nav link, **When** focus lands on the link, **Then** the focus indicator is still visible (pointer-events retained on interactive children).
 
 ---
 
-### User Story 3 — Contact via SpeedDial FAB (Priority: P3)
+### User Story 3 — Workshop Cards Match Portfolio Card Design (Priority: P1)
 
-A visitor uses the persistent floating SpeedDial FAB to quickly access any of the three Metamatopoeia contact channels from anywhere on the page.
+A visitor browses the Workshop section and sees project cards that are visually identical in structure and styling to the portfolio cards on the model site.
 
-**Why this priority**: Provides persistent, page-agnostic contact access, mirroring the reference's primary contact pattern.
+**Why this priority**: The Workshop section is the primary showcase content. Its card design communicates the brand's visual quality.
 
-**Independent Test**: With the page open, click the FAB. The three contact action buttons expand. Click each one and verify the correct destination. Press Escape — the FAB closes. Click outside the FAB — it closes.
+**Independent Test**: Open `index.html#workshop`. Compare each card against `sds-smith/html_portfolio` `portfolio.html`. Card image bleeds to the top edges of the card. Content padding is inside a `.content` div. Buttons are inline anchor elements styled as buttons.
 
 **Acceptance Scenarios**:
 
-1. **Given** the FAB is closed, **When** the visitor clicks the FAB, **Then** three action buttons expand (Email, GitHub, LinkedIn) with appropriate SVG icons and ARIA labels.
-2. **Given** the FAB is open, **When** the visitor clicks the Email action, **Then** the browser opens `mailto:metamatopoeia@gmail.com` and the FAB closes.
-3. **Given** the FAB is open, **When** the visitor clicks outside the speed-dial container, **Then** the FAB closes without navigation.
-4. **Given** the FAB is open, **When** the visitor presses `Escape`, **Then** the FAB closes.
-5. **Given** a keyboard-only user, **When** they tab to the FAB and press `Enter`, **Then** the actions expand and each action is reachable by subsequent Tab presses.
+1. **Given** the visitor views a workshop card, **When** the card renders, **Then** the project image fills the full card width, bleeds to the top and side edges (no border-radius gap or padding between image and card edges), and is not padded inside the card.
+2. **Given** the visitor views a workshop card, **When** they read the content area, **Then** the title, description, and action buttons are contained in a `.content` div with `16px` padding, separated from the image.
+3. **Given** the visitor clicks an action button, **When** the link resolves, **Then** it navigates correctly (new tab for external URLs) and is keyboard-focusable.
+4. **Given** the visitor is on mobile (≤768px), **When** the Workshop section renders, **Then** cards stack vertically and action buttons are full-width.
 
 ---
 
-### User Story 4 — Contact Section (Priority: P3)
+### User Story 4 — Color Palette Uses Frost for Text and Slate for Reflection (Priority: P2)
 
-A visitor scrolls to or navigates to the Contact section and finds all three contact channels explicitly listed with clear labels and clickable links.
+A visitor reads the page and sees light-colored text rendered against the dark background overlay, with glass card reflections using a slate-toned gradient.
 
-**Why this priority**: Complements the FAB with an in-page, fully discoverable contact surface that's accessible without the floating component.
+**Why this priority**: The text-primary token was incorrectly set to `--color-slate` (dark), rendering dark text on a dark background. The reflection token should match the brand's neutral tone.
 
-**Independent Test**: Navigate to `index.html#contact`. All three contact channels (email, GitHub, LinkedIn) are visible, labeled, and their links resolve correctly.
+**Independent Test**: Open `index.html`. All body text, nav links, section titles, card titles, and descriptions appear in the light `--color-frost` (`#EFF1F3`) tone. Inspect the glass cards — the reflection gradient at the top-left corner uses a slate-toned (not white or frost-toned) gradient.
 
 **Acceptance Scenarios**:
 
-1. **Given** the visitor navigates to the Contact section, **When** the section renders, **Then** all three channels are displayed: Email (`metamatopoeia@gmail.com`), GitHub (`github.com/metamatopoeia`), LinkedIn (`linkedin.com/company/metamatopoeia`).
-2. **Given** a channel link is clicked, **When** the browser resolves the link, **Then** email opens `mailto:`, GitHub and LinkedIn open in a new tab with `rel="noopener noreferrer"`.
+1. **Given** the visitor views the page in light mode, **When** they read any text element using `--lg-color-text-primary`, **Then** the text color resolves to `var(--color-frost)`.
+2. **Given** a keyboard user with `prefers-color-scheme: dark` active, **When** the dark mode override applies, **Then** `--lg-color-text-primary` is still explicitly set to `var(--color-frost)` in the dark mode block.
+3. **Given** a glass card is rendered, **When** the visitor inspects the `::after` reflection pseudo-element, **Then** its gradient resolves to `rgb(var(--color-slate-rgb) / ...)` stop values.
 
 ---
 
-### User Story 5 — Accessibility & Reduced-Motion (Priority: P2)
+### User Story 5 — Speed Dial FAB Shows Paper Plane Icon (Static) (Priority: P2)
 
-A visitor using assistive technology or a device with `prefers-reduced-motion` or `prefers-reduced-transparency` enabled experiences a fully usable, readable site.
+A visitor clicks the Speed Dial FAB and sees a paper plane icon that remains unchanged whether the dial is open or closed.
 
-**Why this priority**: Non-negotiable quality gate per the constitution.
+**Why this priority**: The current "+" icon that rotates to "×" is inconsistent with the model site's send/contact metaphor and changes state in a distracting way.
 
-**Independent Test**: Enable OS-level reduced motion. Reload page — all CSS transitions are disabled. Enable high-contrast/reduce-transparency — glass blur and opacity fall back gracefully. Tab through the entire page without a mouse — all interactive elements are reachable and visible.
+**Independent Test**: Open `index.html`. The FAB displays a paper plane (Lucide `Send`) icon. Click it to open — the icon does not change or rotate. Close it — the icon is still the paper plane.
 
 **Acceptance Scenarios**:
 
-1. **Given** `prefers-reduced-motion: reduce` is active, **When** the page loads, **Then** `--lg-glass-transition-duration` is `0ms` and `scroll-behavior` is `auto`.
-2. **Given** `prefers-reduced-transparency: reduce` is active, **When** the page loads, **Then** `--lg-glass-bg-opacity` is `0.98` and `backdrop-filter` is `none`.
-3. **Given** a screen reader user, **When** they navigate the page, **Then** all decorative elements have `aria-hidden="true"` and all interactive elements have accessible labels.
-4. **Given** a keyboard-only user, **When** they tab through the page, **Then** focus indicators are visible on all interactive elements.
+1. **Given** the FAB is closed, **When** the visitor views it, **Then** the FAB icon is a paper plane SVG (`<line x1="22" y1="2" x2="11" y2="13">` + `<polygon points="22 2 15 22 11 13 2 9 22 2">`).
+2. **Given** the FAB is open, **When** the visitor views it, **Then** the icon is identical to the closed state — no rotation, no swap.
+3. **Given** a reduced-motion user, **When** the FAB is toggled, **Then** no icon transform occurs (transition duration is 0ms).
 
 ---
 
 ### Edge Cases
 
-- What happens when a project image asset is missing? Cards must still render with graceful `alt` text fallback — no broken layout.
-- What happens on a very narrow viewport (<320px)? Layout must not overflow horizontally.
-- What happens if the visitor has both `prefers-reduced-motion` and `prefers-reduced-transparency` active simultaneously? Both overrides apply without conflict.
-- What happens if `backdrop-filter` is unsupported (older browsers)? The `--lg-glass-bg-opacity` opaque fallback makes cards readable.
+- At narrow viewports (<320px), the background `auto 100vh` sizing must not cause horizontal overflow — the `body` base fallback color (`--lg-color-surface-page`) fills the gap.
+- If both `prefers-reduced-motion` and `prefers-reduced-transparency` are active simultaneously, both overrides apply without conflict.
+- Removing `backdrop-filter` from `.header` must not cause any stacking context side-effects on the nav links' `z-index` relative to page content.
+- The `body::before` `will-change: transform` declaration must not be present if it causes compositing issues on low-end devices — it is acceptable to omit.
 
 ---
 
@@ -106,37 +102,68 @@ A visitor using assistive technology or a device with `prefers-reduced-motion` o
 
 ### Functional Requirements
 
-- **FR-001**: The deliverable MUST be a single `index.html` file paired with a single `index.css` file, openable directly from the filesystem without a build step or server.
-- **FR-002**: The page MUST contain exactly three top-level content sections in order: Hero (`id="hero"`), Workshop (`id="workshop"`), Contact (`id="contact"`).
-- **FR-003**: The sticky header navigation MUST contain three links anchoring to `#hero`, `#workshop`, and `#contact`, labeled "home", "workshop", and "contact" respectively.
-- **FR-004**: The header MUST display the brand name "Metamatopoeia" — no personal names anywhere in markup or content.
-- **FR-005**: The Hero section MUST contain a `.card-elevated` glass card with the tagline **"Elegant Software Intentionally Designed"** and a CTA button linking to `#workshop`.
-- **FR-006**: The Workshop section MUST contain exactly four `.card-elevated` project cards: Cup, Liquid Glass UI, Discover Breweries, and Assemble the Jams.
-- **FR-007**: Each project card MUST display: project title, description, and action button(s) linking to the project's GitHub repository. Characterization labels (Open-Source / Home Lab / Experimental) are deferred to a future iteration.
-- **FR-008**: The Contact section MUST use a `.card-elevated` glass card layout to explicitly display all three authorized contact channels: `metamatopoeia@gmail.com`, `https://github.com/metamatopoeia`, `https://www.linkedin.com/company/metamatopoeia`.
-- **FR-009**: A SpeedDial FAB MUST be fixed-positioned (bottom-right) and persistent across all scroll positions, exposing the same three contact channels (Email, GitHub, LinkedIn) on expand.
-- **FR-010**: The SpeedDial FAB MUST be controlled by no more than 30 non-empty JavaScript source lines inside the single `<script>` block, excluding the `<script>` tags themselves. JavaScript may only handle FAB toggle, close on action click, close on outside click, and close on Escape key.
-- **FR-011**: All color values in `index.css` MUST derive exclusively from the four Metamatopoeia palette tokens: `--color-slate: #5A606A`, `--color-teal: #79A1A2`, `--color-mist: #BDBFC6`, `--color-frost: #EFF1F3`. No other hex, rgb, hsl, or named color values permitted.
-- **FR-012**: All Liquid Glass design tokens MUST follow the `--lg-{group}-{subgroup}-{token}` naming convention.
-- **FR-013**: Dark mode MUST be handled via `prefers-color-scheme: dark` media query overriding CSS custom properties only.
-- **FR-014**: Reduced-motion MUST be handled via `prefers-reduced-motion: reduce` setting `--lg-glass-transition-duration: 0ms` and `scroll-behavior: auto`.
-- **FR-015**: Reduced-transparency MUST be handled via `prefers-reduced-transparency: reduce` setting `--lg-glass-bg-opacity: 0.98` and `backdrop-filter: none`.
-- **FR-016**: The background MUST use the local asset `./assets/background-image-profile.jpeg` with a token-derived alpha overlay, sourced from the reference repository.
-- **FR-017**: All card media images MUST be local assets sourced from the reference repository's `public/assets/` directory.
-- **FR-018**: Zero external network requests are permitted — no CDN resources, web fonts, remote images, or analytics scripts.
-- **FR-019**: Semantic HTML5 elements MUST be used where structurally appropriate, including `<header>`, `<nav>`, `<main>`, `<section>`, and `<article>`. A `<footer>` is not required for v1 unless footer-specific content is introduced without adding a fourth top-level content section.
-- **FR-020**: All decorative elements MUST carry `aria-hidden="true"`. All interactive elements MUST have appropriate ARIA labels.
-- **FR-021**: Font sizing MUST use `clamp()` for fluid typography scaling.
-- **FR-022**: Layout MUST be mobile-first with a primary breakpoint at 768px.
-- **FR-023**: The `<title>`, `<meta name="description">`, and Open Graph tags MUST reference Metamatopoeia and describe it as a software project showcase.
-- **FR-024**: No JavaScript frameworks, build tools, CSS preprocessors, or `<iframe>` embeds are permitted.
-- **FR-025**: The AboutApp popover component from the reference MUST NOT be included (contains personal copyright attribution).
+#### REQ-1: Background Image Treatment
+
+- **FR-001**: The background MUST be rendered via a `body::before` pseudo-element — `content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; pointer-events: none;`
+- **FR-002**: The `body::before` `background` shorthand MUST use exactly three layers: `linear-gradient(overlay, overlay)`, `url("./assets/background-image-profile.jpeg")`, and a CSS fallback gradient — in that order.
+- **FR-003**: The overlay color in the gradient MUST derive from `rgb(var(--color-slate-rgb) / 0.85)` — no raw `rgba(0,0,0,...)` values permitted.
+- **FR-004**: `background-size: auto 100vh`, `background-position: right`, `background-repeat: no-repeat` MUST be set on `body::before`.
+- **FR-005**: The `body` rule MUST have its `background-image`, `background-size`, `background-position`, and `background-attachment` declarations removed; `body` retains only `min-height: 100vh` and color fallback.
+- **FR-006**: At `@media (max-width: 768px)`, `body::before { background-size: cover; }` MUST be set to restore full-width coverage on mobile.
+
+#### REQ-2: Header Surface Unification
+
+- **FR-007**: `.header` MUST NOT have `background`, `backdrop-filter`, or `-webkit-backdrop-filter` declarations.
+- **FR-008**: `.header` MUST NOT have a `border-bottom` declaration.
+- **FR-009**: `.header` MUST have `pointer-events: none`.
+- **FR-010**: A `header *` (or `.header *`) rule MUST set `pointer-events: auto` so nav links and brand text remain interactive.
+
+#### REQ-3: Workshop Card Design Match
+
+- **FR-011**: Each workshop card MUST use the HTML structure: `<article class="card card-elevated">` → `<img class="media" ...>` + `<div class="content">` → (`<h3 class="project-title">`, `<p class="portfolio-description">`, `<div class="card-actions">` → `<a class="button" href="...">` elements).
+- **FR-012**: `.card-elevated` MUST have `border-radius: 24px` and `overflow: hidden`. The `padding: 2rem` declaration MUST be removed from `.card-elevated`.
+- **FR-012a**: Because `.card-elevated` loses its global padding, `.hero-card` MUST add `padding: 2rem` explicitly in `index.css` to preserve the Hero section card layout. `.contact-card` MUST likewise add `padding: 2rem` explicitly.
+- **FR-013**: `.card-elevated::before` MUST be replaced by `.card-elevated::after` with `content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--lg-glass-reflection); pointer-events: none;`
+- **FR-014**: The `.card::before` declaration MUST likewise be replaced by `.card::after` using the same inset pattern.
+- **FR-015**: A `.media` CSS rule MUST be added: `position: relative; z-index: 1; display: block; width: 100%; object-fit: cover; background-size: cover; background-repeat: no-repeat; background-position: center;`
+- **FR-016**: A `.content` CSS rule MUST be added: `position: relative; z-index: 1; padding: 16px;`
+- **FR-017**: A `.card-actions` CSS rule MUST be added: `display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;`
+- **FR-018**: The `.project-image`, `.project-content`, `.project-actions`, and `.project-description` CSS rules MUST be removed. The `.project-card` CSS rule MUST be removed.
+- **FR-019**: The `.project-grid` layout wrapper MUST be replaced by `.portfolio-links` (flex column, `gap: 24px`) to match the model's list layout for portfolio cards.
+- **FR-020**: Action buttons in workshop cards MUST use `<a class="button" href="...">` — no `<button>` elements nested inside anchors, and no `.button-secondary` modifier class on workshop card links.
+- **FR-020a**: The base `.button` CSS rule MUST be updated to match the model's glass-surface button style: `border: 1px solid var(--lg-glass-border); background: var(--lg-glass-surface); color: var(--lg-color-text-muted); font-size: var(--lg-typography-size-xs); padding: 8px 16px;`. The `.button-primary` override retains its teal-background style. The `.button-secondary` CSS rule MAY be retained in the stylesheet for future use but is not applied to any HTML element in v1.
+- **FR-020b**: A `.layout-list .card` rule MUST be added: `width: 100%;` — ensures cards are full-width in the flex-column portfolio list across all browsers.
+
+#### REQ-4: Color Palette Token Reassignment
+
+- **FR-021**: `--lg-color-text-primary` in `:root` MUST be set to `var(--color-frost)`.
+- **FR-022**: `--lg-glass-reflection` in `:root` MUST use `--color-slate-rgb` channel values. The gradient MUST follow the model's four-stop pattern: `linear-gradient(135deg, rgb(var(--color-slate-rgb) / 0.4) 0%, rgb(var(--color-slate-rgb) / 0) 40%, rgb(var(--color-slate-rgb) / 0) 60%, rgb(var(--color-slate-rgb) / 0.15) 100%)`.
+- **FR-023**: The `@media (prefers-color-scheme: dark)` block MUST retain `--lg-color-text-primary: var(--color-frost)` explicitly (no removal of the override even though it is now redundant with the `:root` value).
+
+#### REQ-5: Speed Dial FAB Icon
+
+- **FR-024**: The FAB icon SVG in `index.html` MUST be replaced with the paper plane (send) icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>`.
+- **FR-025**: The CSS rule `.speed-dial-checkbox:checked ~ .speed-dial-fab .speed-dial-icon { transform: rotate(45deg); }` MUST be removed from `index.css`.
+
+#### Carry-Forward Constitutional Requirements (unchanged from 001)
+
+- **FR-026**: All color values MUST derive from the four palette tokens: `--color-slate`, `--color-teal`, `--color-mist`, `--color-frost`.
+- **FR-027**: All Liquid Glass design tokens MUST follow `--lg-{group}-{subgroup}-{token}` naming.
+- **FR-028**: The JavaScript `<script>` block MUST remain ≤30 non-empty source lines.
+- **FR-029**: Zero external network requests permitted.
+- **FR-030**: Semantic HTML5 elements, `clamp()` typography, mobile-first 768px breakpoint, and accessibility ARIA labels must all be preserved.
+
+---
 
 ### Key Entities
 
-- **Project Card**: Represents a showcased software project. Attributes: title, description, media image, action button(s) with href. (Characterization labels deferred to v2.)
-- **Contact Channel**: An authorized outreach link. Exactly three exist: Email, GitHub, LinkedIn — each with an SVG icon and ARIA label.
-- **SpeedDial FAB**: A floating action button that expands to reveal Contact Channels. State: open/closed, managed by checkbox hack plus no more than 30 non-empty JavaScript source lines.
+- **`body::before`**: Fixed pseudo-element carrying the background image and overlay gradient. Sole owner of background rendering.
+- **`.media`**: Block-level image class that bleeds to card edges with no internal padding, matching the reference's card image treatment.
+- **`.content`**: Padding container within `.card-elevated` that houses all card text and actions at `16px` inset.
+- **`.card-actions`**: Flex row container for action `<a class="button">` links inside a card.
+- **`.portfolio-links`**: Flex column container for workshop cards, replacing `.project-grid`.
+- **`--lg-color-text-primary`**: Now resolves to `var(--color-frost)` — light text against the dark-overlaid background.
+- **`--lg-glass-reflection`**: Now uses `--color-slate-rgb` four-stop gradient for the glass sheen effect.
 
 ---
 
@@ -144,25 +171,26 @@ A visitor using assistive technology or a device with `prefers-reduced-motion` o
 
 ### Measurable Outcomes
 
-- **SC-001**: `index.html` opens and renders completely in any modern browser directly from the filesystem (no server required, no console errors).
-- **SC-002**: All three navigation anchors scroll to their respective sections without JavaScript (CSS `scroll-behavior: smooth`).
-- **SC-003**: Zero external network requests are recorded in the browser DevTools Network tab on a cold load.
-- **SC-004**: The SpeedDial FAB JavaScript block contains no more than 30 non-empty JavaScript source lines, excluding `<script>` tags and blank lines.
-- **SC-005**: All four project cards render correctly with images, descriptions, and working action buttons (no characterization labels in v1).
-- **SC-006**: With `prefers-reduced-motion` enabled, no CSS transitions or animations execute.
-- **SC-007**: The page passes keyboard-only navigation — every interactive element is reachable via Tab and activatable via Enter/Space.
-- **SC-008**: No personal name or biographical copy appears in visible text, metadata, headings, labels, or attribution in `index.html` or `index.css`; canonical external repository URL paths are permitted when required by project links.
-- **SC-009**: Every color value in `index.css` traces back to one of the four Metamatopoeia palette tokens.
-- **SC-010**: The page renders without horizontal overflow at viewport widths from 280px to 1440px.
+- **SC-001**: At a viewport of ≥1024px, the background image is visibly confined to the right portion of the viewport; the left side shows only the gradient overlay. Verified by visual inspection.
+- **SC-002**: Scrolling past the Hero section, the header area shows no glass background, blur, or bottom border. Verified by visual inspection and DevTools computed styles.
+- **SC-003**: All four workshop card images bleed flush to the top and side edges of their cards (no padding gap between image and card border). Verified by visual inspection.
+- **SC-004**: Each workshop card's content area has exactly `16px` padding (DevTools box model). Action buttons are `<a class="button">` elements, not `<button>` or `<a><button>`.
+- **SC-005**: All text using `--lg-color-text-primary` renders in `#EFF1F3` (frost) in light mode. Verified by DevTools computed color value.
+- **SC-006**: `--lg-glass-reflection` computed value contains `rgb(90 96 106 / ...)` stops (slate-rgb), not frost-rgb. Verified by DevTools.
+- **SC-007**: The FAB icon is a paper plane SVG. Clicking the FAB to open does not change or rotate the icon. Verified by visual inspection in open and closed states.
+- **SC-008**: `index.html` opens and renders without console errors from the filesystem.
+- **SC-009**: Zero external network requests on cold load (DevTools Network tab).
+- **SC-010**: The JavaScript `<script>` block contains ≤30 non-empty source lines (unchanged from 001).
+- **SC-011**: The page renders without horizontal overflow at 280px–1440px viewport widths.
 
 ---
 
 ## Assumptions
 
-- The background image (`background-image-profile.jpeg`) and all card media images will be copied from the reference repository (`sds-smith/html_portfolio`) into `./assets/` during the implementation phase.
-- The Cup project card mirrors the reference exactly with three action buttons: "Check out the Gist" (links to the Gist), "Check out the Preview" (links to `cupsocial.app`), and "Join the Beta" (links to `cupsocial.app`).
-- The Liquid Glass UI repo is at `github.com/metamatopoeia/liquid-glass-ui`.
-- Discover Breweries links to `github.com/sds-smith/discover-breweries`. Assemble the Jams links to `github.com/sds-smith/assemble_the_jams_3`.
-- No favicon asset is assumed to exist yet; a simple inline SVG favicon or omission is acceptable for v1.
-- The page will use normal document scrolling with section scroll margins; the reference `.scrollable` container pattern is not required for v1 unless explicitly added to the HTML/CSS contracts and task list.
-- Dark mode support is included per the constitution but the primary design is light-mode with the Metamatopoeia palette.
+- All five changes are surgical edits to the existing `index.html` and `index.css`. No new files or assets are added.
+- The existing `assets/` directory and all four card media images (`card-media-cup.png`, etc.) are already present.
+- The `.project-grid` wrapper in `index.html` is replaced with `.portfolio-links`; the section structure (`<section id="workshop" ...>`, `<h2 class="section-title">`) is unchanged.
+- The `.speed-dial-fab` label element in `index.html` retains its current `for`, `aria-label`, and `tabindex` attributes; only the inner SVG is replaced.
+- `--color-slate-rgb: 90 96 106` is already declared in `:root` and can be referenced by the new `--lg-glass-reflection` value.
+- The dark mode block currently sets `--lg-color-text-primary: var(--color-frost)` — this override is retained verbatim per Q3 intent lock.
+- The `body::before` fallback gradient uses `--color-slate` and `--color-teal` token-derived values (no raw hex permitted).

@@ -1,6 +1,6 @@
-# Context Snapshot — Metamatopoeia Website
+# Context Snapshot — Metamatopoeia Layout Refinement
 
-**Generated**: 2026-06-05  
+**Generated**: 2026-06-06  
 **Phase**: End of Phase 4 (Clarify) — Pre-Phase 5 Handoff  
 **Purpose**: Restore full session context for a new model with zero chat history.
 
@@ -8,151 +8,198 @@
 
 ## What We Are Building
 
-A single-page brand website for **Metamatopoeia** — a software project showcase. The site is a **constitutional remix** of the reference repository `sds-smith/html_portfolio` (at `github.com/sds-smith/html_portfolio`, files in `public/`). We keep the entire CSS architecture and component system verbatim, then remap brand, palette, structure, and content to satisfy the Metamatopoeia constitution.
+A targeted refinement of the existing `index.html` + `index.css` to more precisely match the layout, components, and color palette of the reference site `sds-smith/html_portfolio` (`public/` directory). The site is already built; this is a **surgical polish pass** covering exactly 5 changes. All constitution constraints remain in force.
 
-**Deliverables**: `index.html` + `index.css` (+ `assets/` directory of images).
+**Deliverables**: Modified `index.html` + `index.css` only. No new files, no asset changes.
 
 ---
 
 ## Reference Repository — Key Facts
 
-- Files live in `public/`: `index.html`, `index.css`, `about.html`, `portfolio.html`
-- `index.html` = featured project hero layout (`.layout-fullscreen` + `.layout-hero`)
-- `portfolio.html` = project list (`.layout-list` scroll container)
-- `about.html` = personal philosophy cards
-- Shared `index.css` (~19KB) covers all pages
-- Background: `./assets/background-image-profile.jpeg` + token-derived alpha overlay
-- JS: one `<script>` block at bottom of `<body>` — exactly the SpeedDial FAB logic, ≤30 non-empty source lines
+- Files live in `public/`: `index.html`, `index.css`, `portfolio.html`, `about.html`
+- Background: `body::before` pseudo-element, `background-size: auto 100vh`, `background-position: right`, `background-repeat: no-repeat` → image is right-justified and does NOT fill full width
+- Header: no `background` or `backdrop-filter` — transparent, same visual surface as page content behind it
+- Portfolio cards (`portfolio.html`): `article.card.card-elevated` → `img.media` + `div.content` → (`span.project-title`, `p.portfolio-description`, `div.card-actions` → `a` > `button.button`)
+- `card-elevated` in reference: `border-radius: 24px; overflow: hidden;` — **no padding on the card itself**; padding lives on `.content` (`padding: 16px`)
+- `card-elevated::after` pseudo-element carries `background: var(--lg-glass-reflection)` (inset, absolute)
+- SpeedDial FAB: `<button class="fab">` with `<span class="fab-icon visible">` + `<span class="fab-icon hidden">` inside; main icon is a paper plane (send/arrow SVG)
+- SpeedDial actions: `div.actions` > `div.action-wrapper` > `a.action`
 
 ---
 
-## Architecture Decisions (Not in Spec)
+## 5 Changes — Discovery Notes
 
-### Single-Page Collapse Strategy
+### Req 1 — Background Image Treatment
 
-The reference has 3 pages. We collapse them into 1:
+**Model**: `body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; background: linear-gradient(overlay), url("...bg.jpeg"), fallback-gradient; background-size: auto 100vh; background-position: right; background-repeat: no-repeat; will-change: transform; pointer-events: none; }`
 
-- `index.html` hero card → `#hero` section
-- `portfolio.html` project list → `#workshop` section
-- `about.html` → **dropped entirely** (no bio content permitted)
-- New → `#contact` section (dedicated, using `.card-elevated` glass card)
+**Current**: `body { background-image: linear-gradient(...), url("..."); background-size: cover; background-position: center; background-attachment: fixed; }` — fills full width, centered.
 
-The page uses normal document scrolling with section scroll margins; the reference `.scrollable` container pattern is not required for v1 unless explicitly added to the HTML/CSS contracts and task list.
+**Change**: Move background from `body` to `body::before` pseudo-element with model's `background-size: auto 100vh; background-position: right; background-repeat: no-repeat`. Overlay color must remain derived from `--color-slate-rgb` per constitution.
 
-### Layout Class Application
+**Constitution check**: Using `rgba(0,0,0,...)` for overlay would violate palette constraint — must stay `rgb(var(--color-slate-rgb) / 0.85)`.
 
-- `#hero` uses `.layout-hero` centering
-- `#workshop` and `#contact` use `.layout-list`
+---
 
-### Color Palette Remapping
+### Req 2 — Header Surface Unification
 
-The reference uses a dark grayscale palette. We replace ALL palette token values with Metamatopoeia colors:
+**Model**: `header { pointer-events: none; }` — no background, no backdrop-filter, no border. Header is visually transparent against the page background.
 
-| Reference token                             | Reference value | →   | Metamatopoeia mapping                           |
-| ------------------------------------------- | --------------- | --- | ----------------------------------------------- |
-| `--lg-palette-primary-dark`                 | `#09090b`       | →   | `--color-slate: #5A606A`                        |
-| `--lg-palette-primary-main`                 | `#18181b`       | →   | `--color-slate: #5A606A`                        |
-| `--lg-palette-text-on-surface`              | `#fff`          | →   | `--color-frost: #EFF1F3`                        |
-| `--lg-palette-text-on-surface-secondary`    | `#d4d4d8`       | →   | `--color-mist: #BDBFC6`                         |
-| `--lg-palette-background-fallback` gradient | dark zinc       | →   | gradient using `--color-slate` + `--color-teal` |
+**Current**: `.header { background: var(--lg-glass-surface); backdrop-filter: blur(...); border-bottom: 1px solid var(--lg-glass-border); }` — distinct glass surface.
 
-The four palette tokens are declared in `:root`:
+**Change**: Remove `background`, `backdrop-filter`, `-webkit-backdrop-filter`, and `border-bottom` from `.header`. Keep `pointer-events: none` and add `header * { pointer-events: auto; }` per model pattern.
 
-```css
---color-slate: #5a606a;
---color-teal: #79a1a2;
---color-mist: #bdbfc6;
---color-frost: #eff1f3;
+---
+
+### Req 3 — Workshop Card Exact Design Match
+
+**Model card structure** (from `portfolio.html`):
+
+```html
+<article class="card card-elevated">
+  <img src="..." class="media" alt="..." />
+  <div class="content">
+    <span class="project-title">Title</span>
+    <p class="portfolio-description">...</p>
+    <div class="card-actions">
+      <a href="..." target="_blank" rel="noopener noreferrer">
+        <button class="button">View Source Code</button>
+      </a>
+    </div>
+  </div>
+</article>
 ```
 
-All `--lg-palette-*` tokens then reference these via CSS custom property composition.
+**Current card structure**: Uses `.project-image`, `.project-content`, `.project-actions`, `.project-title`, `.project-description` — all custom classes.
 
-Glass physics values stay close to the reference, but every color-bearing glass token must be derived from the four Metamatopoeia palette tokens or palette RGB channel tokens.
+**CSS changes needed**:
 
-### SpeedDial FAB — Contact Channels
+- `card-elevated`: remove `padding: 2rem`; set `border-radius: 24px`; set `overflow: hidden`; move `::before` reflection to `::after` inset pseudo-element
+- Add `.media` class (matches reference)
+- Add `.content` class: `position: relative; z-index: 1; padding: 16px;`
+- Add `.card-actions` class (distinct from current `.project-actions`)
 
-Reference had: Email, StackOverflow, GitHub, LinkedIn (4 actions).  
-Ours has: **Email, GitHub, LinkedIn only** (3 actions — StackOverflow dropped).
+**HTML changes needed**: Remap class names in all 4 workshop cards. Use `<span class="project-title">` (not `<h3>`). Wrap each action button in `<a>...<button class="button">...</button></a>`.
 
-Updated links:
-
-- Email → `mailto:metamatopoeia@gmail.com`
-- GitHub → `https://github.com/metamatopoeia`
-- LinkedIn → `https://www.linkedin.com/company/metamatopoeia`
-
-### AboutApp Component — Dropped
-
-The reference's bottom-left `?` popover (`.about-app`) contains "© 2026 Shawn D Smith". It is entirely removed — no replacement.
-
-### Background Image — Decorative Asset
-
-`background-image-profile.jpeg` is retained as decorative background (same as reference). This is permitted by the constitution as local decorative imagery when used as brand atmosphere without personal-identifying copy.
+**Deviation noted**: Model's `<a><button>` pattern is technically invalid HTML (interactive element inside interactive element). Since the user requires exact match, this is acceptable but must be documented.
 
 ---
 
-## Content Inventory
+### Req 4 — Color Palette Token Reassignment
 
-### Hero Section (`#hero`)
+**Two sub-changes**:
 
-- Layout: `.layout-hero` centered `.card-elevated`
-- Tagline: **"Elegant Software Intentionally Designed"**
-- CTA button: "See the Workshop" → `href="#workshop"`
-- No media image (text-only card)
+1. `--lg-color-text-primary` (or equivalent token driving body/element text color) must use `var(--color-frost)` — light text on dark background. Currently uses `var(--color-slate)` (dark text).
 
-### Workshop Section (`#workshop`)
+2. `--lg-glass-reflection` must use `--color-slate` based gradient. Currently: `linear-gradient(135deg, rgb(var(--color-frost-rgb) / 0.4) 0%, rgb(var(--color-frost-rgb) / 0) 50%)`. Change to: `linear-gradient(135deg, rgb(var(--color-slate-rgb) / 0.4) 0%, rgb(var(--color-slate-rgb) / 0) 50%)` (or matching model's four-stop pattern using slate-rgb).
 
-Four `.card-elevated` project cards in `.layout-list`:
-
-| Project            | Media Image                         | Description Source                                 | Action Buttons                                                                                            |
-| ------------------ | ----------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Cup                | `card-media-cup.png`                | Reference `index.html` (desktop + mobile variants) | "Check out the Gist" → Gist URL; "Check out the Preview" → cupsocial.app; "Join the Beta" → cupsocial.app |
-| Liquid Glass UI    | `card-media-liquid-glass-ui.png`    | Reference `portfolio.html`                         | "View Source Code" → github.com/metamatopoeia/liquid-glass-ui                                             |
-| Discover Breweries | `card-media-discover-breweries.png` | Reference `portfolio.html`                         | "View Source Code" → github.com/sds-smith/discover-breweries                                              |
-| Assemble the Jams  | `card-media-atj.png`                | Reference `portfolio.html`                         | "View Source Code" → github.com/sds-smith/assemble_the_jams_3                                             |
-
-### Contact Section (`#contact`)
-
-- Layout: `.layout-list` single `.card-elevated`
-- Section heading: "Contact"
-- Three channel rows, each with SVG icon + label + link:
-  - Email → `mailto:metamatopoeia@gmail.com`
-  - GitHub → `https://github.com/metamatopoeia` (new tab)
-  - LinkedIn → `https://www.linkedin.com/company/metamatopoeia` (new tab)
+**Cascade effects**: Changing `text-primary` to `--color-frost` will make nav links, section titles, hero title, project titles all light-colored. Dark mode override in `@media (prefers-color-scheme: dark)` may need review (currently already sets `text-primary` to `--color-frost`).
 
 ---
 
-## Assets Required
+### Req 5 — Speed Dial FAB Icon
 
-All sourced from `sds-smith/html_portfolio` `public/assets/`:
+**Model icon** (paper plane / send):
 
-- `background-image-profile.jpeg`
-- `card-media-cup.png`
-- `card-media-liquid-glass-ui.png`
-- `card-media-discover-breweries.png`
-- `card-media-atj.png`
-- `metamatopoeia_logo.jpeg` (favicon)
+```svg
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="22" y1="2" x2="11" y2="13"></line>
+  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+</svg>
+```
 
-The `plan.md` implementation steps must include a task to copy these from the reference repo into `./assets/`.
+**Current icon**: Two intersecting lines ("+") that rotate to "×" when open.
 
----
+**Change**:
 
-## What Is NOT Changing from the Reference CSS
-
-These are kept **verbatim** (only palette token values swap):
-
-- Glass physics token structure (`--lg-glass-*`) with color-bearing values remapped to palette-derived tokens
-- Card classes: `.card`, `.card-elevated`, `.card-outlined`
-- Layout classes: `.layout-fullscreen`, `.layout-hero`, `.layout-list`
-- SpeedDial CSS: `.speed-dial`, `.fab`, `.action`, `.action-wrapper`, `.fab-icon`
-- Responsive breakpoints: `@media (max-width: 768px)`, `@media (max-height: 500px) and (orientation: landscape)`
-- `prefers-reduced-motion`, `prefers-reduced-transparency`, `prefers-color-scheme: dark` blocks
-- Normal document scrolling with section scroll margins
-- `.desktop` / `.mobile` visibility toggle classes
-- Button, typography, nav, header styles
+- Replace SVG path with paper plane icon above
+- Remove CSS rule `.speed-dial-checkbox:checked ~ .speed-dial-fab .speed-dial-icon { transform: rotate(45deg); }` — icon must NOT change on open state
 
 ---
 
-## Constraints Checklist (for plan.md Constitution Check gate)
+## Phase 4 Gap Resolutions (Not in Discovery Notes)
+
+These were identified during the Phase 4 cold-eye review and added to the spec as FR-012a, FR-020a, FR-020b.
+
+### G1: Hero + Contact Card Padding (FR-012a)
+
+- `card-elevated` loses `padding: 2rem` globally so images bleed to card edges.
+- `.hero-card` and `.contact-card` must each explicitly add `padding: 2rem` back in CSS.
+- Without this, the hero tagline and contact list items would be flush against the card border.
+
+### G2: Base `.button` Glass Style (FR-020a)
+
+- Workshop card buttons change from `<a class="button button-secondary">` to `<a class="button">`.
+- The current base `.button` has no background/border without a modifier — renders invisible.
+- Resolution: update base `.button` to glass-surface style: `border: 1px solid var(--lg-glass-border); background: var(--lg-glass-surface); color: var(--lg-color-text-muted);`
+- `.button-primary` override is unaffected (Hero CTA stays teal).
+- `.button-secondary` CSS rule stays in the file but is no longer applied to any element.
+
+### G3: Full-Width Cards in List (FR-020b)
+
+- Added `.layout-list .card { width: 100%; }` to guarantee full-width cards in the flex-column layout.
+
+---
+
+## Discovery Q&A Summary (Phase 2 Intent Locks)
+
+| Question                              | Decision                                                       |
+| ------------------------------------- | -------------------------------------------------------------- |
+| `<a><button>` vs `<a class="button">` | `<a class="button">` — semantic compliance, visually identical |
+| `<h3>` vs `<span>` for project title  | `<h3 class="project-title">` — preserve heading hierarchy      |
+| Dark mode `text-primary` override     | Keep the override explicitly even though now redundant         |
+
+---
+
+## Phase 5 Handoff Brief (for SWE-1.6 bootstrapping)
+
+The next model starts a **new Cascade session**, selects **SWE-1.6**, and runs `/speckit.plan`.
+
+### Codebase State
+
+- `index.html` — fully built, 140 lines, single page, 3 sections + speed dial FAB
+- `index.css` — fully built, 646 lines, complete Liquid Glass design system
+- `assets/` — all 4 card media images present; `background-image-profile.jpeg` present
+
+### Files to Edit
+
+1. **`index.css`** — ~20 targeted rule changes (background, header, card classes, color tokens, button, FAB CSS)
+2. **`index.html`** — workshop card HTML restructure (4 cards × class/element remapping) + FAB SVG swap
+
+### Files NOT to Touch
+
+- `assets/` directory
+- `<script>` block in `index.html` (FAB JS logic unchanged)
+- Section structure, nav, hero content, contact content
+
+### Key CSS Change Map
+
+| Target                                                                                                             | Change                                                                           |
+| ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| `body`                                                                                                             | Remove background declarations; keep `min-height: 100vh` + color                 |
+| `body::before` (new)                                                                                               | Add pseudo-element with right-justified bg image                                 |
+| `@media (max-width: 768px)` `body::before`                                                                         | Add `background-size: cover`                                                     |
+| `.header`                                                                                                          | Remove background, backdrop-filter, border-bottom; add `pointer-events: none`    |
+| `.header *` (new)                                                                                                  | Add `pointer-events: auto`                                                       |
+| `--lg-color-text-primary`                                                                                          | Change to `var(--color-frost)`                                                   |
+| `--lg-glass-reflection`                                                                                            | Change to 4-stop slate-rgb gradient                                              |
+| `.card::before`                                                                                                    | Replace with `.card::after` (inset, full-card)                                   |
+| `.card-elevated::before`                                                                                           | Replace with `.card-elevated::after` (inset)                                     |
+| `.card-elevated`                                                                                                   | Add `overflow: hidden`; change `border-radius` to `24px`; remove `padding: 2rem` |
+| `.hero-card`                                                                                                       | Add `padding: 2rem`                                                              |
+| `.contact-card`                                                                                                    | Add `padding: 2rem`                                                              |
+| `.media` (new)                                                                                                     | Add full-width image rule                                                        |
+| `.content` (new)                                                                                                   | Add `z-index: 1; padding: 16px`                                                  |
+| `.card-actions` (new)                                                                                              | Add flex row rule                                                                |
+| `.portfolio-links` (new)                                                                                           | Add `display: flex; flex-direction: column; gap: 24px;`                          |
+| `.layout-list .card` (new)                                                                                         | Add `width: 100%`                                                                |
+| `.button`                                                                                                          | Update to glass-surface style                                                    |
+| `.speed-dial-checkbox:checked ~ .speed-dial-fab .speed-dial-icon`                                                  | Remove rotation rule                                                             |
+| `.project-grid`, `.project-card`, `.project-image`, `.project-content`, `.project-actions`, `.project-description` | Remove all six rules                                                             |
+
+---
+
+## Constraints Checklist (carry-forward)
 
 - [x] Zero external network requests
 - [x] No build tools, frameworks, or preprocessors
@@ -160,11 +207,11 @@ These are kept **verbatim** (only palette token values swap):
 - [x] Exactly 3 sections: Hero, Workshop, Contact
 - [x] Nav: home / workshop / contact
 - [x] Brand: Metamatopoeia only
-- [x] 4-color palette enforced
+- [x] 4-color palette enforced (all changes must trace to 4 tokens)
 - [x] `--lg-{group}-{subgroup}-{token}` naming
 - [x] JS ≤ 30 non-empty source lines, single `<script>` block
 - [x] Semantic HTML5
 - [x] `clamp()` for fluid typography
 - [x] Mobile-first, 768px breakpoint
 - [x] `prefers-color-scheme`, `prefers-reduced-motion`, `prefers-reduced-transparency` handled
-- [x] Decorative background image permitted by constitution wording clarification
+- [x] Decorative background image permitted by constitution v1.0.2
