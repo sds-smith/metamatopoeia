@@ -1,124 +1,210 @@
-# Context Snapshot — 003-branding-and-founder-bridge
+# Context Snapshot: 004-nav-scroll-glass-mobile-menu
 
-**Generated**: 2026-06-06
-**Phase**: 4 (Clarify) complete — ready for Phase 5 handoff (SWE-1.6, new session)
-
----
-
-## Purpose
-
-This file captures all conversational nuance, design decisions, and architectural constraints from Phases 2–4 that are not already encoded in `spec.md`. A fresh model can restore full context from `constitution.md` + `spec.md` + this file alone.
+**Generated**: 2026-06-07
+**Phases captured**: 2 (Discovery) + 3 (Specify) + 4 (Clarify)
+**Purpose**: Restore full context for a cold-slate Phase 5 session (SWE-1.6). Read this before running /speckit.plan.
 
 ---
 
-## Feature Identity
+## 1. Active Spec
 
-- **Branch**: `003-branding-and-founder-bridge`
-- **Predecessor**: `002-layout-refinement` (completed; memory purged)
-- **Constitution version at spec time**: `2.0.0` (v2.1.0 amendment is the first task)
+`spec.md` in `.specify/memory/` is the authoritative source. Feature branch: `004-nav-scroll-glass-mobile-menu`.
 
 ---
 
-## Discovery Decisions (Phase 2 nuance)
+## 2. Codebase Snapshot (files relevant to this feature only)
 
-### Logo Assets
-Two PNG assets were added to `assets/` during the discovery session:
+| File | Lines | Relevance |
+|------|-------|-----------|
+| `index.html` | 468 | All HTML changes land here |
+| `index.css` | 740 | All CSS changes land here |
 
-| File | Size | Use |
-|---|---|---|
-| `Metamatopoeia_simple_small.png` | 38KB | Nav brand mark |
-| `Metamatopoeia_simple_transparent.png` | 3.2MB | Background watermark |
+### Current nav HTML structure (lines 30–77 of `index.html`)
 
-**Visual description of the mark**: A geometric diamond/chevron-style icon in brand teal (`--color-teal`), composed of nested concentric diamond shapes with a small teal square at the center.
+```html
+<header class="header">
+  <nav class="nav">
+    <div class="nav-brand">
+      <img src="./assets/Metamatopoeia_simple_small.png" alt="Metamatopoeia" class="nav-logo" />
+      Metamatopoeia
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero" class="nav-link" …>home</a></li>
+      <li><a href="#workshop" class="nav-link" …>workshop</a></li>
+      <li><a href="https://sds-smith.io/about" class="nav-link" …>meet the founder</a></li>
+      <li><a href="#contact" class="nav-link" …>contact</a></li>
+    </ul>
+  </nav>
+</header>
+```
 
-**`_small.png` background**: Has an **opaque slate-colored background** (matching `--color-slate` #5A606A). This is intentional — the logo will appear as a branded square stamp in the nav. The user explicitly chose this asset for the nav and accepted the opaque background treatment.
+### Current nav CSS (lines 295–343 of `index.css`)
 
-**`_transparent.png` background**: True transparent background. The logo mark itself renders at natural teal opacity. The opaque-area pixels are the teal mark only.
+```css
+.header {
+  position: sticky; top: 0; z-index: 1000;
+  padding: 1rem 2rem; pointer-events: none;
+}
+.header * { pointer-events: auto; }
+.nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+.nav-brand { font-size: var(--lg-typography-size-xl); font-weight: 700; color: var(--lg-color-text-primary); }
+.nav-logo { display: block; height: 36px; width: auto; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-link { color: var(--lg-color-text-primary); font-weight: 500; transition: … }
+```
 
-### Hero CTA — Asymmetric Dual-Text
-The user described the pattern explicitly as:
-> "Asymmetric Dual-Text (The Minimalist Route) — Remove the button shape entirely and use elegant, typographic hierarchy."
+### Current mobile nav CSS (lines 700–710 of `index.css`)
 
-- Exact link text: `"Scroll to Workshop"` | `"Meet the Founder"` — these are the verbatim approved strings
-- Separated by a minimal `|` divider character in a `<span aria-hidden="true">`
-- No button shape, no padding that creates a button silhouette — pure typographic `<a>` elements
+```css
+@media (max-width: 768px) {
+  .nav { flex-direction: column; gap: 1rem; }        ← MUST be replaced with row layout
+  .nav-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }  ← MUST be fully replaced
+}
+```
 
-### Nav Structure
-User explicitly specified the new nav order:
-> "home / workshop / about the founder / contact"
-
-Then refined the label to `"meet the founder"` (matching the hero CTA label). The nav link uses **lowercase** to match the existing nav-link convention (`home`, `workshop`, `contact` are all lowercase).
-
-### Personal Website URL
-`https://sds-smith.io` — confirmed, verbatim. Used in both hero CTA and nav link.
-
----
-
-## Architectural Decisions (Phase 4)
-
-### Watermark: body::after, not body::before extra layer
-**Decision**: Use a new `body::after` pseudo-element for the watermark, not an additional layer in `body::before`.
-
-**Reason**: CSS `background` shorthand does not support per-layer `opacity`. To achieve the "medium opacity — present but secondary" treatment (~40–50%), an independent pseudo-element with `opacity: 0.45` is required.
-
-`body::before` is already used for the page background (profile image + overlay gradient). `body::after` is currently unused and is the clean, minimal solution.
-
-**Approved opacity**: `0.45` (tunable ±0.05 during visual review in Phase 7).
-
-### Watermark Positioning
-- `background-position: left center` — left side of the viewport where profile image is absent
-- `background-size: auto 55vh` — large enough to be a meaningful brand presence, small enough not to overwhelm
-- Both values are marked "subject to visual review" — the planner should treat `55vh` as a starting value, not a hard pixel requirement
-
-### body::after z-index
-Must use `z-index: -1` to sit behind all page content (same as `body::before`). Both pseudo-elements occupy the same stacking layer beneath content.
-
-### No HTML changes for watermark
-The watermark is 100% CSS — no new `<img>`, `<div>`, or any HTML element. This satisfies the constitution's accessibility requirement (CSS background images are not in the accessibility tree) and keeps the HTML clean.
+### Existing JS block (lines 438–465 of `index.html`)
+26 non-empty lines. Manages the speed-dial FAB. **DO NOT MODIFY.** JS budget: 4 lines remain.
 
 ---
 
-## Constitutional Impact
+## 3. Resolved Implementation Details
 
-### Amendment Required: Principle IV → v2.1.0 (MINOR)
+### 3.1 Hamburger Icon Dimensions and Morph Offsets
 
-**Current text (v2.0.0)**:
-> "Navigation MUST reference only these three in-page anchors."
+- Each `.hamburger-line`: `width: 100%`, `height: 2px`, `border-radius: 2px`
+- Flex container (`.nav-hamburger`): `flex-direction: column; gap: 5px`
+- Container total height: 3×2px + 2×5px = **16px**
+- Container center: **8px** from top
+- **Line 1 center** = 1px → `translateY(+7px) rotate(45deg)` when open
+- **Line 2** → `opacity: 0; transform: scaleX(0)` when open
+- **Line 3 center** = 15px → `translateY(-7px) rotate(-45deg)` when open
+- Transition duration: `var(--lg-glass-transition-duration)` (300ms; collapses to 0ms on `prefers-reduced-motion`)
 
-**Required change**: Add a clause permitting external attribution links in the nav alongside the three required in-page anchors.
+### 3.2 Scroll Animation Keyframe
 
-**Suggested amended text**:
-> "Navigation MUST reference the three required in-page anchors (Hero, Workshop, Contact). Additional external attribution links MAY appear in the navigation at the author's discretion."
+```css
+@keyframes nav-glass-activate {
+  from {
+    background: transparent;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    box-shadow: none;
+    border-bottom: 1px solid transparent;
+  }
+  to {
+    background: var(--lg-glass-surface);
+    backdrop-filter: blur(var(--lg-glass-blur));
+    -webkit-backdrop-filter: blur(var(--lg-glass-blur));
+    box-shadow: var(--lg-glass-shadow-md);
+    border-bottom: 1px solid var(--lg-glass-border);
+  }
+}
 
-**Governance**: This is a MINOR bump (new permissive guidance added, no principle removed or incompatibly redefined). The amendment must be:
-1. Authored with a Sync Impact Report comment block at the top of `constitution.md`
-2. Version bumped to `2.1.0`
-3. Committed before any `index.html` or `index.css` edits begin (SC-011)
+.header {
+  /* ADD these — do not remove existing rules */
+  animation-name: nav-glass-activate;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: scroll(root);
+  animation-range: 0px var(--lg-nav-scroll-range);
+}
+```
+
+**Why `animation-fill-mode: both`?** At scroll > 80px the animation progress exceeds 100% — `both` ensures the `to` (glass) state persists. At scroll = 0 the progress is exactly 0% → `from` state applies naturally without fill.
+
+### 3.3 Mobile Overlay Selector Chain (inside `@media (max-width: 768px)` only)
+
+```css
+/* Closed state (default on mobile) */
+.nav-links {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgb(var(--color-slate-rgb) / var(--lg-nav-overlay-bg-opacity));
+  backdrop-filter: blur(var(--lg-glass-blur));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur));
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 2rem; list-style: none;
+  transform: translateY(-100%);
+  visibility: hidden;
+  opacity: 0;
+  z-index: 999;
+  transition:
+    transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
+    opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
+    visibility 0ms var(--lg-glass-transition-duration);
+}
+
+/* Open state */
+.nav-menu-checkbox:checked ~ .header .nav-links {
+  transform: translateY(0);
+  visibility: visible;
+  opacity: 1;
+  transition:
+    transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
+    opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
+    visibility 0ms;
+}
+```
+
+**Important**: `visibility` transition asymmetry — delay on close (waits for opacity to finish), instant on open. This prevents tab-accessible links from being reachable while the menu is visually closed.
+
+**No `!important` needed.** Overlay styles live only inside `@media (max-width: 768px)`. Desktop always sees the default `.nav-links` flex row from outside the media query.
+
+### 3.4 Mobile Nav Link Styles in Overlay
+
+```css
+@media (max-width: 768px) {
+  .nav-links .nav-link {
+    font-size: var(--lg-typography-size-lg);
+    min-height: 48px;
+    display: flex; align-items: center;
+    padding: 0 1.5rem;
+    color: var(--lg-color-text-primary);
+  }
+}
+```
+
+### 3.5 New CSS Custom Properties
+
+```css
+/* Nav Scroll Animation */
+--lg-nav-scroll-range: 80px;
+--lg-nav-overlay-bg-opacity: 0.88;
+```
 
 ---
 
-## Files to Touch (Implementation Scope)
+## 4. Constitutional Compliance Decisions
 
-| File | Change Type |
-|---|---|
-| `.specify/memory/constitution.md` | Amendment v2.1.0 — Principle IV |
-| `index.html` | Nav logo img, nav 4th link, hero CTA restructure |
-| `index.css` | `.nav-logo`, `.hero-cta`, `.hero-cta-link`, `.hero-cta-divider`, `body::after` (watermark), mobile suppression |
-
-**No new files** beyond existing assets (already in `assets/`).
-
----
-
-## JS Line Count Baseline
-Current `<script>` block: **13 non-empty source lines** (the IIFE handling speed dial). No JS changes required by this feature. Hard limit is 30 lines.
+| Principle | Decision |
+|-----------|----------|
+| **I (Zero JS)** | Zero new JS lines consumed. Hamburger: CSS checkbox. Scroll: CSS Scroll-Driven Animations. |
+| **II (Liquid Glass CSS)** | Two new tokens added following `--lg-{group}-{subgroup}-{token}` convention. All animation via CSS. |
+| **III (Palette)** | No new color hex values. All colors derive from existing `--color-*-rgb` tokens. |
+| **IV (Three-section nav)** | Nav link structure (home/workshop/meet the founder/contact) unchanged. |
+| **V (A11y)** | `tabindex="0"` + `aria-label` on hamburger `<label>`. `visibility: hidden` removes closed links from tab order. Touch targets ≥ 48px. |
 
 ---
 
-## Open Visual Review Points (for Phase 7)
-1. Nav logo height: `36px` specified — confirm visually against the existing nav height (~60px estimated)
-2. Watermark size: `auto 55vh` — tune based on actual viewport rendering
-3. Watermark opacity: `0.45` — tune in ±0.05 increments if too prominent or too subtle
+## 5. Accepted Limitations (documented in spec §8)
+
+- **No auto-close on link click** — CSS-only constraint. User taps ✕ to close. Acceptable for the portfolio use case.
+- **Browser support** — Chrome 115+, Firefox 110+, Safari 17.4+ for scroll-driven animations. Older browsers: transparent nav with no broken layout.
+- **Label keyboard activation** — `<label tabindex="0">` keyboard Space activation works in modern browsers. No JS fallback for older browsers.
 
 ---
 
-## Clarity Score at Phase 4 Exit: 95%
+## 6. Files Changed (summary for planner)
+
+| File | Change Type | Sections Affected |
+|------|-------------|-------------------|
+| `index.html` | ADD checkbox before `<header>`; ADD hamburger `<label>` inside `.nav` | Lines 29–77 region |
+| `index.css` | ADD 2 tokens; ADD `@keyframes`; MODIFY `.header`; ADD hamburger rules; MODIFY mobile nav rules | Multiple sections |
+
+---
+
+## 7. Explicit Non-Goals
+
+- Do NOT modify the speed-dial FAB or its JS.
+- Do NOT create new files.
+- Do NOT add JS for any of these three features.
+- Do NOT change link text, hrefs, or ARIA labels of existing nav links.
