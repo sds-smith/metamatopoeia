@@ -14,8 +14,8 @@
 
 **Purpose**: Add shared tokens and the accessible checkbox foundation needed by the CSS-only mobile menu.
 
-- [ ] T001 Add `--lg-nav-scroll-range: 80px` and `--lg-nav-overlay-bg-opacity: 0.88` to the `:root` token block in `index.css` after `--lg-glass-transition-easing`
-- [ ] T002 [P] Add `<input type="checkbox" id="nav-menu-toggle" class="nav-menu-checkbox" aria-label="Toggle navigation menu" />` as the first child of `<body>` in `index.html` before `<header class="header">`
+- [x] T001 Add `--lg-nav-scroll-range: 80px` and `--lg-nav-overlay-bg-opacity: 0.88` to the `:root` token block in `index.css` after `--lg-glass-transition-easing`
+- [x] T002 [P] Add `<input type="checkbox" id="nav-menu-toggle" class="nav-menu-checkbox" aria-label="Toggle navigation menu" />` as the first child of `<body>` in `index.html` before `<header class="header">`
 
 **Checkpoint**: Two tokens exist in `:root`; checkbox is first child of `<body>`, remains keyboard-focusable, and does not use `aria-hidden`.
 
@@ -29,9 +29,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] Add a `/* NAV SCROLL ANIMATION */` section in `index.css` after the HEADER & NAVIGATION section containing `@keyframes nav-glass-activate` with a transparent `from` state (`background: transparent; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); box-shadow: none; border-bottom: 1px solid transparent;`) and a glass `to` state (`background: var(--lg-glass-surface); backdrop-filter: blur(var(--lg-glass-blur)); -webkit-backdrop-filter: blur(var(--lg-glass-blur)); box-shadow: var(--lg-glass-shadow-md); border-bottom: 1px solid var(--lg-glass-border);`)
-- [ ] T004 [US1] Add `animation-name: nav-glass-activate; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: scroll(root); animation-range: 0px var(--lg-nav-scroll-range);` to the existing `.header` rule in `index.css`
-- [ ] T005 [US1] In the `@media (prefers-reduced-motion: reduce)` block in `index.css`, add a `.header` override that sets `animation: none; background: var(--lg-glass-surface); backdrop-filter: blur(var(--lg-glass-blur)); -webkit-backdrop-filter: blur(var(--lg-glass-blur)); box-shadow: var(--lg-glass-shadow-md); border-bottom: 1px solid var(--lg-glass-border);`
+- [x] T003 [US1] Add a `/* NAV SCROLL ANIMATION */` section in `index.css` after the HEADER & NAVIGATION section containing `@keyframes nav-glass-activate` with a transparent `from` state (`background: transparent; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); box-shadow: none; border-bottom: 1px solid transparent;`) and a glass `to` state (`background: var(--lg-glass-surface); backdrop-filter: blur(var(--lg-glass-blur)); -webkit-backdrop-filter: blur(var(--lg-glass-blur)); box-shadow: var(--lg-glass-shadow-md); border-bottom: 1px solid var(--lg-glass-border);`)
+- [x] T004 [US1] Add `animation-name: nav-glass-activate; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: scroll(root); animation-range: 0px var(--lg-nav-scroll-range);` to the existing `.header` rule in `index.css`
+- [x] T005 [US1] In the `@media (prefers-reduced-motion: reduce)` block in `index.css`, add a `.header` override that sets `animation: none; background: var(--lg-glass-surface); backdrop-filter: blur(var(--lg-glass-blur)); -webkit-backdrop-filter: blur(var(--lg-glass-blur)); box-shadow: var(--lg-glass-shadow-md); border-bottom: 1px solid var(--lg-glass-border);`
 
 **Checkpoint**: US1 fully functional. Scroll animation works. Reduced-motion fallback applies static glass.
 
@@ -45,19 +45,19 @@
 
 ### Implementation for User Story 2
 
-- [ ] T006 [US2] In `index.html`, inside `<nav class="nav">`, add `<label for="nav-menu-toggle" class="nav-hamburger">` with three `<span class="hamburger-line" aria-hidden="true"></span>` children, positioned immediately after `.nav-brand` and before `<ul class="nav-links">`
-- [ ] T007 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-menu-checkbox` using an accessible visually-hidden pattern: `position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;`
-- [ ] T008 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, update `.nav-brand` to include `display: flex; align-items: center; gap: 0.5rem; position: relative; z-index: 1;` while preserving its existing typography and color declarations
-- [ ] T009 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, add mobile-first `.nav-hamburger { display: flex; flex-direction: column; gap: 5px; width: 24px; cursor: pointer; padding: 4px; position: relative; z-index: 1; }`
-- [ ] T010 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, add `.hamburger-line { width: 100%; height: 2px; background: var(--lg-color-text-primary); border-radius: 2px; transition: transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing); }`
-- [ ] T011 [US2] In the HEADER & NAVIGATION section of `index.css`, replace the existing `.nav-links` base rule with mobile-first overlay styles: `display: flex; position: fixed; inset: 0; background: rgb(var(--color-slate-rgb) / var(--lg-nav-overlay-bg-opacity)); backdrop-filter: blur(var(--lg-glass-blur)); -webkit-backdrop-filter: blur(var(--lg-glass-blur)); flex-direction: column; align-items: center; justify-content: center; gap: 2rem; list-style: none; transform: translateY(-100%); visibility: hidden; opacity: 0; z-index: 0; transition: transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), visibility 0ms var(--lg-glass-transition-duration);`
-- [ ] T012 [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-links .nav-link { font-size: var(--lg-typography-size-lg); min-height: 48px; display: flex; align-items: center; padding: 0 1.5rem; color: var(--lg-color-text-primary); }`
-- [ ] T013 [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-menu-checkbox:focus-visible ~ .header .nav-hamburger { outline: 2px solid var(--lg-color-accent-primary); outline-offset: 4px; border-radius: 4px; }`
-- [ ] T014 [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-menu-checkbox:checked ~ .header .nav-links { transform: translateY(0); visibility: visible; opacity: 1; transition: transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), visibility 0ms; }`
-- [ ] T015 [US2] In the HEADER & NAVIGATION section of `index.css`, add hamburger-to-X selectors: `.nav-menu-checkbox:checked ~ .header .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }`, `.nav-menu-checkbox:checked ~ .header .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }`, and `.nav-menu-checkbox:checked ~ .header .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }`
-- [ ] T016 [US2] Remove the old desktop-first mobile overrides for `.nav` and `.nav-links` from the existing `@media (max-width: 768px)` block in `index.css` so they do not conflict with mobile-first base nav behavior
-- [ ] T017 [US2] Add a desktop override block `@media (min-width: 769px)` in `index.css` that sets `.nav-menu-checkbox { display: none; }` (removes invisible focusable control from desktop tab order), `.nav-hamburger { display: none; }`, and restores `.nav-links` to desktop row layout: `position: static; inset: auto; flex-direction: row; justify-content: flex-end; align-items: center; gap: 2rem; transform: none; visibility: visible; opacity: 1; z-index: auto; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; transition: none;`
-- [ ] T018 [US2] In the `@media (prefers-reduced-motion: reduce)` block in `index.css`, add `.nav-links { transition: none; }` and `.hamburger-line { transition: none; }`
+- [x] T006 [US2] In `index.html`, inside `<nav class="nav">`, add `<label for="nav-menu-toggle" class="nav-hamburger">` with three `<span class="hamburger-line" aria-hidden="true"></span>` children, positioned immediately after `.nav-brand` and before `<ul class="nav-links">`
+- [x] T007 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-menu-checkbox` using an accessible visually-hidden pattern: `position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;`
+- [x] T008 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, update `.nav-brand` to include `display: flex; align-items: center; gap: 0.5rem; position: relative; z-index: 1;` while preserving its existing typography and color declarations
+- [x] T009 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, add mobile-first `.nav-hamburger { display: flex; flex-direction: column; gap: 5px; width: 24px; cursor: pointer; padding: 4px; position: relative; z-index: 1; }`
+- [x] T010 [P] [US2] In the HEADER & NAVIGATION section of `index.css`, add `.hamburger-line { width: 100%; height: 2px; background: var(--lg-color-text-primary); border-radius: 2px; transition: transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing); }`
+- [x] T011 [US2] In the HEADER & NAVIGATION section of `index.css`, replace the existing `.nav-links` base rule with mobile-first overlay styles: `display: flex; position: fixed; inset: 0; background: rgb(var(--color-slate-rgb) / var(--lg-nav-overlay-bg-opacity)); backdrop-filter: blur(var(--lg-glass-blur)); -webkit-backdrop-filter: blur(var(--lg-glass-blur)); flex-direction: column; align-items: center; justify-content: center; gap: 2rem; list-style: none; transform: translateY(-100%); visibility: hidden; opacity: 0; z-index: 0; transition: transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), visibility 0ms var(--lg-glass-transition-duration);`
+- [x] T012 [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-links .nav-link { font-size: var(--lg-typography-size-lg); min-height: 48px; display: flex; align-items: center; padding: 0 1.5rem; color: var(--lg-color-text-primary); }`
+- [x] T013 [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-menu-checkbox:focus-visible ~ .header .nav-hamburger { outline: 2px solid var(--lg-color-accent-primary); outline-offset: 4px; border-radius: 4px; }`
+- [x] T014 [US2] In the HEADER & NAVIGATION section of `index.css`, add `.nav-menu-checkbox:checked ~ .header .nav-links { transform: translateY(0); visibility: visible; opacity: 1; transition: transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing), visibility 0ms; }`
+- [x] T015 [US2] In the HEADER & NAVIGATION section of `index.css`, add hamburger-to-X selectors: `.nav-menu-checkbox:checked ~ .header .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }`, `.nav-menu-checkbox:checked ~ .header .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }`, and `.nav-menu-checkbox:checked ~ .header .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }`
+- [x] T016 [US2] Remove the old desktop-first mobile overrides for `.nav` and `.nav-links` from the existing `@media (max-width: 768px)` block in `index.css` so they do not conflict with mobile-first base nav behavior
+- [x] T017 [US2] Add a desktop override block `@media (min-width: 769px)` in `index.css` that sets `.nav-menu-checkbox { display: none; }` (removes invisible focusable control from desktop tab order), `.nav-hamburger { display: none; }`, and restores `.nav-links` to desktop row layout: `position: static; inset: auto; flex-direction: row; justify-content: flex-end; align-items: center; gap: 2rem; transform: none; visibility: visible; opacity: 1; z-index: auto; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; transition: none;`
+- [x] T018 [US2] In the `@media (prefers-reduced-motion: reduce)` block in `index.css`, add `.nav-links { transition: none; }` and `.hamburger-line { transition: none; }`
 
 **Checkpoint**: US2 fully functional. Hamburger visible on mobile, overlay opens/closes, icon morphs correctly, checkbox is keyboard-operable, links are unavailable to Tab when closed, and desktop nav links remain visible.
 
@@ -71,8 +71,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T019 [P] [US3] Preserve `.nav-logo { display: block; height: 36px; width: auto; }` as the mobile-first base rule in the HEADER & NAVIGATION section of `index.css`
-- [ ] T020 [P] [US3] In the desktop `@media (min-width: 769px)` block in `index.css`, add `.nav-logo { display: none; }`
+- [x] T019 [P] [US3] Preserve `.nav-logo { display: block; height: 36px; width: auto; }` as the mobile-first base rule in the HEADER & NAVIGATION section of `index.css`
+- [x] T020 [P] [US3] In the desktop `@media (min-width: 769px)` block in `index.css`, add `.nav-logo { display: none; }`
 
 **Checkpoint**: US3 fully functional. Logo visible on mobile, hidden on desktop, and `.nav-brand` text remains visible everywhere.
 

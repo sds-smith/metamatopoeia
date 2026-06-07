@@ -27,6 +27,12 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
+    <input
+      type="checkbox"
+      id="nav-menu-toggle"
+      class="nav-menu-checkbox"
+      aria-label="Toggle navigation menu"
+    />
     <header class="header">
       <nav class="nav">
         <div class="nav-brand">
@@ -37,6 +43,11 @@
           />
           Metamatopoeia
         </div>
+        <label for="nav-menu-toggle" class="nav-hamburger">
+          <span class="hamburger-line" aria-hidden="true"></span>
+          <span class="hamburger-line" aria-hidden="true"></span>
+          <span class="hamburger-line" aria-hidden="true"></span>
+        </label>
         <ul class="nav-links">
           <li>
             <a
@@ -461,6 +472,12 @@
             checkbox.checked = !checkbox.checked;
           }
         });
+        const navToggle = document.getElementById("nav-menu-toggle");
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((a) =>
+            a.addEventListener("click", () => (navToggle.checked = false)),
+          );
       })();
     </script>
   </body>
