@@ -55,6 +55,7 @@ Enhance the existing top navigation (`<header class="header">` / `.nav`) with th
 | FR-2.12 | **Accepted limitation**: The mobile overlay will NOT auto-close when an anchor link is clicked. The user must tap the ✕ to close. This is an accepted CSS-only constraint with zero JS.                                                                                                                                |
 | FR-2.13 | Under `prefers-reduced-motion: reduce`, the slide-in transition MUST be instantaneous (no transform animation).                                                                                                                                                                                                        |
 | FR-2.14 | New responsive nav rules MUST be mobile-first: mobile behavior is the base style, and desktop behavior MUST be applied via `@media (min-width: 769px)`.                                                                                                                                                                |
+| FR-2.15 | On desktop (viewport width > 768px), `.nav-menu-checkbox` MUST be `display: none` to prevent an invisible keyboard-focusable control from appearing in the tab order when no visible hamburger control is rendered.                                                                                                    |
 
 ### FR-3: Nav-Brand Logo Mobile-Only
 
@@ -205,14 +206,14 @@ Insert as **first child of `<body>`**:
 
 ## 7. Sections Affected in `index.css`
 
-| Section                                    | Change Type                                                                                                                                                                                                 |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CSS Custom Properties (Root)               | ADD 2 new tokens (`--lg-nav-scroll-range`, `--lg-nav-overlay-bg-opacity`)                                                                                                                                   |
-| HEADER & NAVIGATION                        | ADD scroll animation properties to `.header`; ADD `.nav-hamburger` and `.hamburger-line` rules; ADD accessible `.nav-menu-checkbox` visually-hidden rule; MODIFY nav rules to mobile-first overlay defaults |
-| New `@keyframes` block                     | ADD `nav-glass-activate` keyframe                                                                                                                                                                           |
-| New Sibling Selector block                 | ADD all `.nav-menu-checkbox:checked ~ ...` rules                                                                                                                                                            |
-| MEDIA QUERIES — Desktop (min-width: 769px) | ADD desktop-only overrides: hide `.nav-logo`, hide `.nav-hamburger`, restore `.nav-links` to static horizontal row                                                                                          |
-| MEDIA QUERIES — Reduced Motion             | ADD `animation: none` override for `.header`; ADD static glass fallback for `.header`                                                                                                                       |
+| Section                                    | Change Type                                                                                                                                                                                                                            |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CSS Custom Properties (Root)               | ADD 2 new tokens (`--lg-nav-scroll-range`, `--lg-nav-overlay-bg-opacity`)                                                                                                                                                              |
+| HEADER & NAVIGATION                        | ADD scroll animation properties to `.header`; ADD `.nav-hamburger` and `.hamburger-line` rules; ADD accessible `.nav-menu-checkbox` visually-hidden rule; MODIFY nav rules to mobile-first overlay defaults                            |
+| New `@keyframes` block                     | ADD `nav-glass-activate` keyframe                                                                                                                                                                                                      |
+| New Sibling Selector block                 | ADD all `.nav-menu-checkbox:checked ~ ...` rules                                                                                                                                                                                       |
+| MEDIA QUERIES — Desktop (min-width: 769px) | ADD desktop-only overrides: hide `.nav-menu-checkbox`, hide `.nav-logo`, hide `.nav-hamburger`, restore `.nav-links` to static horizontal row. Breakpoint uses literal `769px` — justified deviation (see plan.md Complexity Tracking) |
+| MEDIA QUERIES — Reduced Motion             | ADD `animation: none` override for `.header`; ADD static glass fallback for `.header`                                                                                                                                                  |
 
 ---
 
