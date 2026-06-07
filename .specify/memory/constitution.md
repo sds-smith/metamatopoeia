@@ -1,6 +1,32 @@
 <!--
   SYNC IMPACT REPORT
   ==================
+  Version change: 2.1.0 → 2.1.1 (PATCH — permit CSS `transparent` keyword in palette rule)
+
+  Modified principles:
+    - Principle III (Metamatopoeia Color Palette): added explicit clarification that the CSS
+      `transparent` keyword MAY be used where no color is present (e.g., animation `from`
+      states, initial border declarations). `transparent` represents the absence of color and
+      does not constitute a design color choice or a violation of the palette rule.
+
+  Added sections: N/A
+
+  Removed sections: N/A
+
+  Templates reviewed:
+    ✅ .specify/templates/plan-template.md       — no changes required
+    ✅ .specify/templates/spec-template.md       — no changes required
+    ✅ .specify/templates/tasks-template.md      — no changes required
+    ✅ .specify/templates/checklist-template.md  — no changes required
+
+  Follow-up TODOs:
+    - Active spec artifacts for feature 004-nav-scroll-glass-mobile-menu reference
+      `transparent` — these are now valid and require no further remediation for C2.
+-->
+
+<!--
+  SYNC IMPACT REPORT
+  ==================
   Version change: 2.0.0 → 2.1.0 (MINOR — permit external attribution links in navigation)
 
   Modified principles:
@@ -97,6 +123,9 @@ The authorized palette is exactly four colors:
 All color values used anywhere in the CSS MUST derive from these four tokens via CSS custom
 properties. No other hex, rgb, hsl, or named color values are permitted. Alpha variants
 (e.g., `rgb(var(--color-teal-rgb) / 0.12)`) MUST still trace back to a palette token.
+The CSS `transparent` keyword MAY be used where the intent is the complete absence of color
+(e.g., animation `from` states, initial `border` or `background` declarations intended to
+be invisible). `transparent` is not a design color and does not violate this principle.
 
 **Rationale**: Enforces strict brand identity for Metamatopoeia across all present and future
 pages or components.
@@ -185,4 +214,4 @@ document and any spec, plan, task list, or checklist, this constitution takes pr
 gate before Phase 0 research proceeds. Every `/speckit.tasks` output MUST not introduce tasks
 that violate these principles without documented justification.
 
-**Version**: 2.1.0 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-06
+**Version**: 2.1.1 | **Ratified**: 2026-06-05 | **Last Amended**: 2026-06-07
