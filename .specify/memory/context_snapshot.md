@@ -1,210 +1,80 @@
-# Context Snapshot: 004-nav-scroll-glass-mobile-menu
+# Context Snapshot — Bug 005-nav-glass-blur-mobile
 
-**Generated**: 2026-06-07
-**Phases captured**: 2 (Discovery) + 3 (Specify) + 4 (Clarify)
-**Purpose**: Restore full context for a cold-slate Phase 5 session (SWE-1.6). Read this before running /speckit.plan.
-
----
-
-## 1. Active Spec
-
-`spec.md` in `.specify/memory/` is the authoritative source. Feature branch: `004-nav-scroll-glass-mobile-menu`.
+**Generated**: 2026-06-08 (Phase 4 complete)
+**Purpose**: Bridge document for Phase 5 (SWE-1.6 session reset). Captures all nuance not yet in spec.md.
 
 ---
 
-## 2. Codebase Snapshot (files relevant to this feature only)
+## Bug Summary
 
-| File | Lines | Relevance |
-|------|-------|-----------|
-| `index.html` | 468 | All HTML changes land here |
-| `index.css` | 740 | All CSS changes land here |
+Nav glass scroll transition on mobile (iOS Chrome / WebKit): `backdrop-filter` blur intermittently fails to composite. Background tint applies; blur is absent. Failure is non-deterministic (random on same page load).
 
-### Current nav HTML structure (lines 30–77 of `index.html`)
-
-```html
-<header class="header">
-  <nav class="nav">
-    <div class="nav-brand">
-      <img src="./assets/Metamatopoeia_simple_small.png" alt="Metamatopoeia" class="nav-logo" />
-      Metamatopoeia
-    </div>
-    <ul class="nav-links">
-      <li><a href="#hero" class="nav-link" …>home</a></li>
-      <li><a href="#workshop" class="nav-link" …>workshop</a></li>
-      <li><a href="https://sds-smith.io/about" class="nav-link" …>meet the founder</a></li>
-      <li><a href="#contact" class="nav-link" …>contact</a></li>
-    </ul>
-  </nav>
-</header>
-```
-
-### Current nav CSS (lines 295–343 of `index.css`)
-
-```css
-.header {
-  position: sticky; top: 0; z-index: 1000;
-  padding: 1rem 2rem; pointer-events: none;
-}
-.header * { pointer-events: auto; }
-.nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-.nav-brand { font-size: var(--lg-typography-size-xl); font-weight: 700; color: var(--lg-color-text-primary); }
-.nav-logo { display: block; height: 36px; width: auto; }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
-.nav-link { color: var(--lg-color-text-primary); font-weight: 500; transition: … }
-```
-
-### Current mobile nav CSS (lines 700–710 of `index.css`)
-
-```css
-@media (max-width: 768px) {
-  .nav { flex-direction: column; gap: 1rem; }        ← MUST be replaced with row layout
-  .nav-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }  ← MUST be fully replaced
-}
-```
-
-### Existing JS block (lines 438–465 of `index.html`)
-26 non-empty lines. Manages the speed-dial FAB. **DO NOT MODIFY.** JS budget: 4 lines remain.
+**Root cause confirmed**: WebKit does not reliably animate `backdrop-filter` on a `position: sticky` element when driven by `animation-timeline: scroll(root)`. This is a GPU compositor timing race.
 
 ---
 
-## 3. Resolved Implementation Details
+## Fix Decision: `::before` Pseudo-Element Opacity Approach
 
-### 3.1 Hamburger Icon Dimensions and Morph Offsets
+**Chosen over**:
+- `will-change: backdrop-filter` (hint only, not guaranteed)
+- JS class-toggle (reliable but user preferred CSS-only; 4 JS lines remain but chosen not to use them)
 
-- Each `.hamburger-line`: `width: 100%`, `height: 2px`, `border-radius: 2px`
-- Flex container (`.nav-hamburger`): `flex-direction: column; gap: 5px`
-- Container total height: 3×2px + 2×5px = **16px**
-- Container center: **8px** from top
-- **Line 1 center** = 1px → `translateY(+7px) rotate(45deg)` when open
-- **Line 2** → `opacity: 0; transform: scaleX(0)` when open
-- **Line 3 center** = 15px → `translateY(-7px) rotate(-45deg)` when open
-- Transition duration: `var(--lg-glass-transition-duration)` (300ms; collapses to 0ms on `prefers-reduced-motion`)
-
-### 3.2 Scroll Animation Keyframe
-
-```css
-@keyframes nav-glass-activate {
-  from {
-    background: transparent;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    box-shadow: none;
-    border-bottom: 1px solid transparent;
-  }
-  to {
-    background: var(--lg-glass-surface);
-    backdrop-filter: blur(var(--lg-glass-blur));
-    -webkit-backdrop-filter: blur(var(--lg-glass-blur));
-    box-shadow: var(--lg-glass-shadow-md);
-    border-bottom: 1px solid var(--lg-glass-border);
-  }
-}
-
-.header {
-  /* ADD these — do not remove existing rules */
-  animation-name: nav-glass-activate;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-  animation-timeline: scroll(root);
-  animation-range: 0px var(--lg-nav-scroll-range);
-}
-```
-
-**Why `animation-fill-mode: both`?** At scroll > 80px the animation progress exceeds 100% — `both` ensures the `to` (glass) state persists. At scroll = 0 the progress is exactly 0% → `from` state applies naturally without fill.
-
-### 3.3 Mobile Overlay Selector Chain (inside `@media (max-width: 768px)` only)
-
-```css
-/* Closed state (default on mobile) */
-.nav-links {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgb(var(--color-slate-rgb) / var(--lg-nav-overlay-bg-opacity));
-  backdrop-filter: blur(var(--lg-glass-blur));
-  -webkit-backdrop-filter: blur(var(--lg-glass-blur));
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 2rem; list-style: none;
-  transform: translateY(-100%);
-  visibility: hidden;
-  opacity: 0;
-  z-index: 999;
-  transition:
-    transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
-    opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
-    visibility 0ms var(--lg-glass-transition-duration);
-}
-
-/* Open state */
-.nav-menu-checkbox:checked ~ .header .nav-links {
-  transform: translateY(0);
-  visibility: visible;
-  opacity: 1;
-  transition:
-    transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
-    opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
-    visibility 0ms;
-}
-```
-
-**Important**: `visibility` transition asymmetry — delay on close (waits for opacity to finish), instant on open. This prevents tab-accessible links from being reachable while the menu is visually closed.
-
-**No `!important` needed.** Overlay styles live only inside `@media (max-width: 768px)`. Desktop always sees the default `.nav-links` flex row from outside the media query.
-
-### 3.4 Mobile Nav Link Styles in Overlay
-
-```css
-@media (max-width: 768px) {
-  .nav-links .nav-link {
-    font-size: var(--lg-typography-size-lg);
-    min-height: 48px;
-    display: flex; align-items: center;
-    padding: 0 1.5rem;
-    color: var(--lg-color-text-primary);
-  }
-}
-```
-
-### 3.5 New CSS Custom Properties
-
-```css
-/* Nav Scroll Animation */
---lg-nav-scroll-range: 80px;
---lg-nav-overlay-bg-opacity: 0.88;
-```
+**Mechanism**:
+1. `.header::before` holds ALL glass surface properties as **static** values (not animated): `backdrop-filter`, `-webkit-backdrop-filter`, `background`, `box-shadow`, `border-bottom`.
+2. Scroll-Driven Animation moves to `.header::before` and animates only `opacity: 0 → 1`.
+3. `.header` loses all animation properties.
+4. `@keyframes nav-glass-activate` is DELETED and replaced with `@keyframes nav-glass-surface-reveal` (opacity only).
 
 ---
 
-## 4. Constitutional Compliance Decisions
+## Key Architectural Decisions
 
-| Principle | Decision |
-|-----------|----------|
-| **I (Zero JS)** | Zero new JS lines consumed. Hamburger: CSS checkbox. Scroll: CSS Scroll-Driven Animations. |
-| **II (Liquid Glass CSS)** | Two new tokens added following `--lg-{group}-{subgroup}-{token}` convention. All animation via CSS. |
-| **III (Palette)** | No new color hex values. All colors derive from existing `--color-*-rgb` tokens. |
-| **IV (Three-section nav)** | Nav link structure (home/workshop/meet the founder/contact) unchanged. |
-| **V (A11y)** | `tabindex="0"` + `aria-label` on hamburger `<label>`. `visibility: hidden` removes closed links from tab order. Touch targets ≥ 48px. |
+### Decision 1: Static `backdrop-filter` on `::before`
+`backdrop-filter` must NOT appear in a `@keyframes` block. Keeping it static eliminates the WebKit compositor promotion race. This is the core insight.
 
----
+### Decision 2: `z-index: -1` on `::before`
+`.header` creates a stacking context (position: sticky; z-index: 1000). `::before` at `z-index: -1` renders behind nav content (links, hamburger, brand) but within `.header`'s stacking context (i.e., still above scrolling page content). This is the correct layering.
 
-## 5. Accepted Limitations (documented in spec §8)
+### Decision 3: Reduced-motion scope expanded
+User confirmed: the reduced-motion `.header` override (which applied inline glass properties directly to `.header`) MUST be removed and replaced with `.header::before { animation: none; opacity: 1; }` for architectural consistency. Glass state is exclusively owned by `::before` after this fix.
 
-- **No auto-close on link click** — CSS-only constraint. User taps ✕ to close. Acceptable for the portfolio use case.
-- **Browser support** — Chrome 115+, Firefox 110+, Safari 17.4+ for scroll-driven animations. Older browsers: transparent nav with no broken layout.
-- **Label keyboard activation** — `<label tabindex="0">` keyboard Space activation works in modern browsers. No JS fallback for older browsers.
+### Decision 4: Reduced-transparency scope updated
+`.header` is removed from the `backdrop-filter: none` selector list in `prefers-reduced-transparency`. `.header::before` replaces it.
 
 ---
 
-## 6. Files Changed (summary for planner)
+## Technical Risks Logged
 
-| File | Change Type | Sections Affected |
-|------|-------------|-------------------|
-| `index.html` | ADD checkbox before `<header>`; ADD hamburger `<label>` inside `.nav` | Lines 29–77 region |
-| `index.css` | ADD 2 tokens; ADD `@keyframes`; MODIFY `.header`; ADD hamburger rules; MODIFY mobile nav rules | Multiple sections |
+### Risk 1: Scroll-Driven Animation on pseudo-elements in Safari 17.4
+- `animation-timeline: scroll()` on `::before` must be supported in Safari 17.4+.
+- Per CSS spec (Scroll-Driven Animations Level 1), pseudo-elements are valid animation targets.
+- Safari 17.4 shipped Scroll-Driven Animations (March 2024). Pseudo-element support is expected.
+- **Mitigation**: If verified unsupported, fallback is static transparent header at scroll top (same as older browser graceful degradation — not a regression from current state).
+
+### Risk 2: `opacity: 0` + `backdrop-filter` bleed-through on WebKit
+- Older WebKit (pre-2019) showed blur bleed-through at `opacity: 0`.
+- Target browsers (Safari 17.4+) resolve this. Non-issue for stated browser support target.
 
 ---
 
-## 7. Explicit Non-Goals
+## Files Changed (All in `index.css`)
 
-- Do NOT modify the speed-dial FAB or its JS.
-- Do NOT create new files.
-- Do NOT add JS for any of these three features.
-- Do NOT change link text, hrefs, or ARIA labels of existing nav links.
+| Location | Change |
+|---|---|
+| `.header` rule (HEADER & NAV section) | Remove 5 scroll animation properties |
+| `@keyframes nav-glass-activate` block | Rename to `nav-glass-surface-reveal`; replace multi-property keyframe with single `opacity: 0 → 1` |
+| After keyframe | Add `.header::before` rule (static glass + opacity animation) |
+| `prefers-reduced-motion` block | Remove `.header` override (6 properties); add `.header::before { animation: none; opacity: 1; }` |
+| `prefers-reduced-transparency` block | Replace `.header` with `.header::before` in selector list |
+
+**No HTML changes. No JS changes. No new tokens.**
+
+---
+
+## Handoff Instructions for Phase 5 (SWE-1.6)
+
+1. Read `spec.md` in `.specify/memory/` — it is the authoritative source.
+2. Read this `context_snapshot.md` for architectural nuance.
+3. Read `index.css` lines 295–315 (`.header` rule), 422–441 (`@keyframes nav-glass-activate`), 773–811 (`prefers-reduced-motion`), 813–826 (`prefers-reduced-transparency`) for exact current code.
+4. Do NOT modify HTML. Do NOT modify JS. Do NOT add new CSS custom properties.
+5. Run `/speckit.plan` to generate `plan.md` and `tasks.md` in `specs/005-nav-glass-blur-mobile/`.
