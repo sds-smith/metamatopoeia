@@ -302,11 +302,6 @@ a:focus-visible {
   z-index: 1000;
   padding: 1rem 2rem;
   pointer-events: none;
-  animation-name: nav-glass-activate;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-  animation-timeline: scroll(root);
-  animation-range: 0px var(--lg-nav-scroll-range);
 }
 
 .header * {
@@ -368,8 +363,10 @@ a:focus-visible {
   background: var(--lg-color-text-primary);
   border-radius: 2px;
   transition:
-    transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
-    opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing);
+    transform var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing),
+    opacity var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing);
 }
 
 .nav-links {
@@ -423,21 +420,26 @@ a:focus-visible {
    NAV SCROLL ANIMATION & MOBILE MENU
    ============================================ */
 
-@keyframes nav-glass-activate {
-  from {
-    background: transparent;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    box-shadow: none;
-    border-bottom: 1px solid transparent;
-  }
-  to {
-    background: var(--lg-glass-surface);
-    backdrop-filter: blur(var(--lg-glass-blur));
-    -webkit-backdrop-filter: blur(var(--lg-glass-blur));
-    box-shadow: var(--lg-glass-shadow-md);
-    border-bottom: 1px solid var(--lg-glass-border);
-  }
+@keyframes nav-glass-surface-reveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: blur(var(--lg-glass-blur));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur));
+  background: var(--lg-glass-surface);
+  box-shadow: var(--lg-glass-shadow-md);
+  border-bottom: 1px solid var(--lg-glass-border);
+  animation-name: nav-glass-surface-reveal;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: scroll(root);
+  animation-range: 0px var(--lg-nav-scroll-range);
 }
 
 .nav-menu-checkbox:focus-visible ~ .header .nav-hamburger {
@@ -451,8 +453,10 @@ a:focus-visible {
   visibility: visible;
   opacity: 1;
   transition:
-    transform var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
-    opacity var(--lg-glass-transition-duration) var(--lg-glass-transition-easing),
+    transform var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing),
+    opacity var(--lg-glass-transition-duration)
+      var(--lg-glass-transition-easing),
     visibility 0ms;
 }
 
@@ -792,13 +796,9 @@ ul.portfolio-description li {
     transform: none;
   }
 
-  .header {
+  .header::before {
     animation: none;
-    background: var(--lg-glass-surface);
-    backdrop-filter: blur(var(--lg-glass-blur));
-    -webkit-backdrop-filter: blur(var(--lg-glass-blur));
-    box-shadow: var(--lg-glass-shadow-md);
-    border-bottom: 1px solid var(--lg-glass-border);
+    opacity: 1;
   }
 
   .nav-links {
@@ -818,7 +818,7 @@ ul.portfolio-description li {
 
   .card,
   .card-elevated,
-  .header,
+  .header::before,
   .speed-dial-action {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
